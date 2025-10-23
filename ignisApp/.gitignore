@@ -1,6 +1,6 @@
 # Dependências
 # Ignora a pasta de módulos do Node
-node_modules/
+node_modules
 
 # Arquivos de Ambiente (CRÍTICO!)
 # Ignora o arquivo com suas senhas e segredos
