@@ -1,31 +1,54 @@
-import { Location } from './Location';
-import type { IMedia } from './Media';
-import { Signature } from './Signature';
+import mongoose, { Schema, Document } from 'mongoose';
 
-export class Occurrence {
-    // Atributos
-    private id: number;
-    private dateTime: Date;
-    private type: string;
-    private description: string;
-    private status: string;
-
-    // Relações
-    private media: IMedia[] = [];
-    private signatures: Signature[] = [];
-    private location?: Location;
-
-    constructor(id: number, type: string, description: string, status: string, dateTime: Date = new Date()) {
-        this.id = id;
-        this.dateTime = dateTime;
-        this.type = type;
-        this.description = description;
-        this.status = status;
-    }
-
-    public addMedia(m: IMedia): void {
-        this.media.push(m);
-    }
-
-    // ... restante do código
+export interface IOccurrence extends Document {
+  numAviso: string;
+  tipoOcorrencia: string;
+  timestampRecebimento: Date;
+  formaAcionamento: string;
+  situacaoOcorrencia: string;
+  naturezaInicial: string;
+  endereco: {
+    rua: string;
+    numero: string;
+    bairro: string;
+    municipio: string;
+    referencia?: string;
+  };
+  solicitante: {
+    nome: string;
+    telefone: string;
+    relacao: string;
+  };
+  criadoPor: mongoose.Types.ObjectId;
+  statusGeral: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+const OccurrenceSchema = new Schema<IOccurrence>(
+  {
+    numAviso: { type: String, required: true },
+    tipoOcorrencia: { type: String, required: true },
+    timestampRecebimento: { type: Date, required: true },
+    formaAcionamento: { type: String, required: true },
+    situacaoOcorrencia: { type: String, required: true },
+    naturezaInicial: { type: String, required: true },
+    endereco: {
+      rua: { type: String, required: true },
+      numero: { type: String, required: true },
+      bairro: { type: String, required: true },
+      municipio: { type: String, required: true },
+      referencia: { type: String },
+    },
+    solicitante: {
+      nome: { type: String, required: true },
+      telefone: { type: String, required: true },
+      relacao: { type: String, required: true },
+    },
+    criadoPor: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    statusGeral: { type: String, default: 'Recebida' },
+  },
+  { timestamps: true }
+);
+
+export default mongoose.model<IOccurrence>('Occurrence', OccurrenceSchema);
