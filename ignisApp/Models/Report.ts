@@ -1,4 +1,4 @@
-import { Occurrence } from './Occurrence';
+import { IOccurrence } from './Occurrence';
 import type { IUser } from './User';
 
 export class Report {
@@ -9,13 +9,13 @@ export class Report {
 
   // Relações
   private user: IUser; // O usuário que solicitou o relatório (consulta)
-  private occurrences: Occurrence[]; // As ocorrências que o relatório irá agregar
+  private occurrences: IOccurrence[]; // As ocorrências que o relatório irá agregar
 
   constructor(
     id: number,
     format: string,
     user: IUser,
-    occurrences: Occurrence[],
+    occurrences: IOccurrence[],
     generatedAt: Date = new Date()
   ) {
     this.id = id;
@@ -36,7 +36,7 @@ export class Report {
 
     // Simulação de geração de conteúdo
     this.occurrences.forEach(occ => {
-      content += ` - Ocorrência ID: ${occ.getId()}, Tipo: ${occ.getType()}, Status: ${occ.getStatus()}\n`;
+      content += ` - Ocorrência ID: ${occ._id}, Tipo: ${occ.tipoOcorrencia}, Status: ${occ.statusGeral}\n`;
     });
 
     return content;
