@@ -3,13 +3,12 @@
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "node",
-    "moduleDetection": "force",
+    "outDir": "./dist",
+    "rootDir": "./",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "outDir": "./dist",
-    "rootDir": "./",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
@@ -18,8 +17,15 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "**/*.ts",
-    "ignisApp/types.d.ts"
+    "*.ts",
+    "Config",
+    "Controllers",
+    "Interfaces",
+    "Middleware",
+    "Models",
+    "Routes",
+    "Services",
+    "Validations"
   ],
   "exclude": [
     "node_modules",
