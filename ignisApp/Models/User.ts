@@ -1,12 +1,6 @@
-// User.ts
 import mongoose from 'mongoose';
+import { IUser } from '../Interfaces/UserInterface';
 
-export interface IUser {
-  name: string;
-  email: string;
-  role: 'operador' | 'major' | 'administrador';
-  passwordHash: string;
-}
 
 const UserSchema = new mongoose.Schema<IUser>({
   name: { type: String, required: true },
@@ -14,11 +8,11 @@ const UserSchema = new mongoose.Schema<IUser>({
   role: {
     type: String,
     enum: ['operador', 'major', 'administrador'],
+    required: true,
     default: 'operador'
   },
   passwordHash: { type: String, required: true }
 }, { timestamps: true });
 
 const UserModel = mongoose.model<IUser>('User', UserSchema);
-
 export { UserModel };
