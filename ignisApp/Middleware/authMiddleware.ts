@@ -15,8 +15,10 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
 
     req.user = {
-      id: decoded.id,
-      role: decoded.role as 'operador' | 'major' | 'administrador'
+    id: decoded.id,
+    email: decoded.email, 
+    role: decoded.role as 'operador' | 'major' | 'administrador'
+  
     };
 
     next();

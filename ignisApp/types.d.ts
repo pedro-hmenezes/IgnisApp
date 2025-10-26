@@ -1,4 +1,3 @@
-// types.d.ts
 import 'express';
 
 declare global {
@@ -6,6 +5,7 @@ declare global {
     interface Request {
       user?: {
         id: string;
+        email: string; 
         role: 'operador' | 'major' | 'administrador';
       };
     }
