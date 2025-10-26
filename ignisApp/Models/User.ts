@@ -16,4 +16,4 @@ const UserSchema = new mongoose.Schema<IUser>({
 
 const UserModel = mongoose.model<IUser>('User', UserSchema);
 export { UserModel };
-export { IUser } from '../Interfaces/UserInterface';
+export type { IUser } from '../Interfaces/UserInterface';
