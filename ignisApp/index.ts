@@ -1,13 +1,10 @@
 import express, { Request, Response } from 'express';
 import cors, { CorsOptions } from 'cors';
 import { connectDB } from './Config/db.js'; 
-
-
 import { errorMiddleware } from './Middleware/errorMiddleware.js'; 
 import UserRoutes from './Routes/UserRoutes.js'; 
 import OccurrenceRoutes from './Routes/OccurrenceRoutes.js'; 
-import { router } from './Routes/routes.js'; 
-
+import {router} from './Routes/routes.js'; 
 
 // Chame a conexão com o banco
 connectDB();
@@ -15,7 +12,7 @@ connectDB();
 // Configure o app (Middleware)
 const app = express();
 
-// --- Configuração CORS ROBUSTA ---
+// --- Configuração CORS ---
 const explicitOrigins = [
   process.env.FRONTEND_URL, 
   ...(process.env.FRONTEND_URLS?.split(',').map((s: string) => s.trim()).filter(Boolean) ?? []),
@@ -59,6 +56,15 @@ const corsOptions: CorsOptions = {
 
 app.use(cors(corsOptions));
 
+// Habilita o Express a lidar com requisições OPTIONS automaticamente com as opções definidas
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    cors(corsOptions)(req, res, next);
+  } else {
+    next();
+  }
+});
+
 // --- Fim da Configuração CORS ---
 
 // Outros Middlewares Essenciais
@@ -70,7 +76,6 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 // === MONTANDO AS ROTAS DA API ===
-// Monta outras rotas que possam existir em './Routes/routes.js' no prefixo /api
 if (router) {
    app.use('/api', router); 
  }
