@@ -1,7 +1,7 @@
 // index.ts (Back-end - Raiz do Projeto)
 
 // TODOS OS IMPORTS FICAM AQUI NO TOPO
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors, { CorsOptions } from 'cors';
 import { connectDB } from './Config/db.js'; // Ajuste o caminho se necessário
 // 1. IMPORTE AS ROTAS E MIDDLEWARES (Ajuste os caminhos!)
@@ -17,26 +17,47 @@ connectDB();
 // Configure o app (Middleware)
 const app = express();
 
-// --- Configuração CORS CORRIGIDA ---
-const allowedOrigins = [
-  // <<< IMPORTANTE: Coloque a URL EXATA do seu front-end Vercel aqui >>>
-  process.env.FRONTEND_URL || 'https://ignis-app-front-lv8y.vercel.app', 
-  // Adicione localhost se precisar testar localmente
-  // 'http://localhost:5173' 
-];
+// --- Configuração CORS ROBUSTA ---
+// Dica: ajuste FRONTEND_URL, FRONTEND_URLS (separadas por vírgula) nas variáveis de ambiente do Render
+const explicitOrigins = [
+  process.env.FRONTEND_URL, // uma única URL
+  ...(process.env.FRONTEND_URLS?.split(',').map((s: string) => s.trim()).filter(Boolean) ?? []),
+  'https://ignis-app-front-lv8y.vercel.app',
+  'https://iqnisapp.com',
+  'https://ignisapp.com',
+  'http://localhost:5173',
+  'http://localhost:3000',
+].filter(Boolean) as string[];
+
+function isAllowedOrigin(origin?: string | null): boolean {
+  if (!origin) return true; // permite chamadas sem origin (ex: Postman)
+  try {
+    const url = new URL(origin);
+    const host = url.host; // ex: my-app.vercel.app
+    // Libera domínios explícitos
+    if (explicitOrigins.includes(origin)) return true;
+    // Libera qualquer subdomínio do Vercel
+    if (host.endsWith('.vercel.app')) return true;
+    // Libera localhost em portas comuns
+    if (url.hostname === 'localhost') return true;
+  } catch {
+    // se o origin não for uma URL válida, bloqueia
+  }
+  return false;
+}
 
 const corsOptions: CorsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (isAllowedOrigin(origin)) {
       callback(null, true);
     } else {
-      console.error(`CORS Error: Origin '${origin}' not allowed.`); // Log do erro CORS
+      console.error(`CORS Error: Origin '${origin}' not allowed.`);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, 
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // <<< MÉTODOS COMPLETOS
-  allowedHeaders: ['Content-Type', 'Authorization'] 
+  credentials: true, // OK mesmo sem cookies; mantém compatibilidade
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 // Aplica o middleware CORS ANTES das rotas
@@ -50,7 +71,7 @@ app.options('*', cors(corsOptions));
 app.use(express.json()); // Para parsear body JSON
 
 // Rota raiz (opcional)
-app.get('/', (req, res) => {
+app.get('/', (_req: Request, res: Response) => {
  res.send('API do IgnisApp está rodando!');
 });
 

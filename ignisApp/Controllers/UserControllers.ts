@@ -23,10 +23,23 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 };
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
-  // Força o role como 'operador' no momento do cadastro
-  const data = { ...req.body, role: 'operador' };
+  // Aceita "password" vindo do front e mapeia para passwordHash antes de validar
+  const { name, email, password, role } = req.body as {
+    name?: string;
+    email?: string;
+    password?: string;
+    role?: 'operador' | 'major' | 'administrador';
+  };
 
-  const validation = userSchema.safeParse(data);
+  // força role default 'operador' caso não venha do front
+  const dataForValidation = {
+    name,
+    email,
+    role: role ?? 'operador',
+    passwordHash: password ?? (req.body as any).passwordHash, // cobre ambos os casos
+  };
+
+  const validation = userSchema.safeParse(dataForValidation);
   if (!validation.success) {
     return res.status(400).json({
       message: 'Dados inválidos',

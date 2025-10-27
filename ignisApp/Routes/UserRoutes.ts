@@ -4,13 +4,19 @@ import {
   register,
   updateUser,
   deleteUser
-} from '../Controllers/UserControllers';
-import { authMiddleware } from '../Middleware/authMiddleware';
+} from '../Controllers/UserControllers.js';
+import { authMiddleware } from '../Middleware/authMiddleware.js';
 
 const router = Router();
 
+// Login
 router.post('/login', login);
+
+// Cadastro de usuário
+// Mantém a rota antiga '/register' por compatibilidade
 router.post('/register', register);
+// E expõe também POST '/' para clientes que chamam /api/users
+router.post('/', register);
 router.put('/user/:id', authMiddleware, updateUser);
 router.delete('/user/:id', authMiddleware, deleteUser);
 
