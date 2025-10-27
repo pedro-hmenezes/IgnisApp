@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import { registerLog } from '../Services/LogService';
-import { IUser } from '../Interfaces/UserInterface';
+import { registerLog } from '../Services/LogService.js';
+import { IUser } from '../Interfaces/UserInterface.js';
 
 export const logMiddleware = (actionDescription: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {

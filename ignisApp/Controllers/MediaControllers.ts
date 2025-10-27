@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { MediaService } from '../Services/MediaService';
+import { MediaService } from '../Services/MediaService.js';
 
 const mediaService = new MediaService();
 

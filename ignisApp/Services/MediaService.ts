@@ -1,5 +1,5 @@
-import { MediaModel } from '../Models/Media';
-import type { IMedia } from '../Models/Media';
+import { MediaModel } from '../Models/Media.js';
+import type { IMedia } from '../Models/Media.js';
 
 export class MediaService {
     public async create(mediaData: Partial<IMedia>): Promise<IMedia> {

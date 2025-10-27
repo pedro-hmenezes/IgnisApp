@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UserModel } from '../Models/User';
-import { IUser } from '../Interfaces/UserInterface';
+import { UserModel } from '../Models/User.js';
+import { IUser } from '../Interfaces/UserInterface.js';
 import mongoose from 'mongoose';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'segredo';

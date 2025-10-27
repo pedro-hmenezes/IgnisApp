@@ -1,6 +1,6 @@
 // services/logService.ts
 
-import { LogModel } from '../Models/Log';
+import { LogModel } from '../Models/Log.js';
 
 /**
  * Registra uma ação no sistema com detalhes e, opcionalmente, o usuário responsável.

@@ -4,8 +4,8 @@ import {
   criarUsuario,
   atualizarUsuario,
   excluirUsuario
-} from '../Services/UserService';
-import { userSchema } from '../Validations/UserValidation';
+} from '../Services/UserService.js';
+import { userSchema } from '../Validations/UserValidation.js';
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;

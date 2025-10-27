@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { occurrenceCreateSchema } from '../Validations/OccurrenceValidation';
-import { OccurrenceService } from '../Services/OccurrenceService';
-import type { OccurrenceCreatePayload } from '../Interfaces/OccurrenceInterfaces';
+import { occurrenceCreateSchema } from '../Validations/OccurrenceValidation.js';
+import { OccurrenceService } from '../Services/OccurrenceService.js';
+import type { OccurrenceCreatePayload } from '../Interfaces/OccurrenceInterfaces.js';
 
 export const createOccurrence = async (req: Request, res: Response) => {
   const parsed = occurrenceCreateSchema.safeParse(req.body);

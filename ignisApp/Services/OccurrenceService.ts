@@ -1,6 +1,6 @@
 // Services/OccurrenceService.ts
-import Occurrence from '../Models/Occurrence';
-import type { OccurrenceCreatePayload } from '../Interfaces/OccurrenceInterfaces';
+import Occurrence from '../Models/Occurrence.js';
+import type { OccurrenceCreatePayload } from '../Interfaces/OccurrenceInterfaces.js';
 import mongoose from 'mongoose';
 
 export const OccurrenceService = {

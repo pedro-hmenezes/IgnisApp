@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { ReportModel } from '../Models/ReportModel';
-import { registerLog } from '../Services/LogService';
+import { ReportModel } from '../Models/ReportModel.js';
+import { registerLog } from '../Services/LogService.js';
 
 export const createReport = async (req: Request, res: Response) => {
     try {
