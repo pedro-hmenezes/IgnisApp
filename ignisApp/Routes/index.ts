@@ -15,7 +15,7 @@ const app = express();
 
 // Configuração tipada de CORS
 const corsOptions: CorsOptions = {
-  origin: process.env.FRONTEND_URL || 'https://ignisapp.com',
+  origin: process.env.FRONTEND_URL || 'https://ignis-app-front-lv8y.vercel.app',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
