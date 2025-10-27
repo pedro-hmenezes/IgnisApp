@@ -63,8 +63,6 @@ const corsOptions: CorsOptions = {
 // Aplica o middleware CORS ANTES das rotas
 app.use(cors(corsOptions));
 
-// Habilita o Express a lidar com requisições OPTIONS automaticamente
-app.options('*', cors(corsOptions)); 
 // --- Fim da Configuração CORS ---
 
 // Outros Middlewares Essenciais
