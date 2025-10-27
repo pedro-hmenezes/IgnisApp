@@ -1,15 +1,13 @@
-// index.ts (Back-end - Raiz do Projeto)
-
-// TODOS OS IMPORTS FICAM AQUI NO TOPO
 import express, { Request, Response } from 'express';
 import cors, { CorsOptions } from 'cors';
-import { connectDB } from './Config/db.js'; // Ajuste o caminho se necessário
-// 1. IMPORTE AS ROTAS E MIDDLEWARES (Ajuste os caminhos!)
+import { connectDB } from './Config/db.js'; 
+
+
 import { errorMiddleware } from './Middleware/errorMiddleware.js'; 
 import UserRoutes from './Routes/UserRoutes.js'; 
 import OccurrenceRoutes from './Routes/OccurrenceRoutes.js'; 
-// Se você tiver um arquivo './Routes/routes.js' que exporta outros roteadores, importe-o também
-// import { router as otherApiRoutes } from './Routes/routes.js'; 
+import { router } from './Routes/routes.js'; 
+
 
 // Chame a conexão com o banco
 connectDB();
@@ -18,9 +16,8 @@ connectDB();
 const app = express();
 
 // --- Configuração CORS ROBUSTA ---
-// Dica: ajuste FRONTEND_URL, FRONTEND_URLS (separadas por vírgula) nas variáveis de ambiente do Render
 const explicitOrigins = [
-  process.env.FRONTEND_URL, // uma única URL
+  process.env.FRONTEND_URL, 
   ...(process.env.FRONTEND_URLS?.split(',').map((s: string) => s.trim()).filter(Boolean) ?? []),
   'https://ignis-app-front-lv8y.vercel.app',
   'https://iqnisapp.com',
@@ -30,7 +27,7 @@ const explicitOrigins = [
 ].filter(Boolean) as string[];
 
 function isAllowedOrigin(origin?: string | null): boolean {
-  if (!origin) return true; // permite chamadas sem origin (ex: Postman)
+  if (!origin) return true; 
   try {
     const url = new URL(origin);
     const host = url.host; // ex: my-app.vercel.app
@@ -55,12 +52,11 @@ const corsOptions: CorsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // OK mesmo sem cookies; mantém compatibilidade
+  credentials: true, 
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
-// Aplica o middleware CORS ANTES das rotas
 app.use(cors(corsOptions));
 
 // --- Fim da Configuração CORS ---
@@ -75,20 +71,20 @@ app.get('/', (_req: Request, res: Response) => {
 
 // === MONTANDO AS ROTAS DA API ===
 // Monta outras rotas que possam existir em './Routes/routes.js' no prefixo /api
-// if (otherApiRoutes) {
-//    app.use('/api', otherApiRoutes); 
-// }
+if (router) {
+   app.use('/api', router); 
+ }
 // Monta as rotas de usuário no prefixo /api/users
 app.use('/api/users', UserRoutes); 
 // Monta as rotas de ocorrência no prefixo /api/occurrences
-app.use('/api/occurrences', OccurrenceRoutes); // <<< ROTA CORRIGIDA (PLURAL)
+app.use('/api/occurrences', OccurrenceRoutes); 
 // =============================
 
-// Middleware de erro (DEVE SER O ÚLTIMO app.use)
+// Middleware de erro 
 app.use(errorMiddleware);
 
 // Inicie o servidor
-const PORT = process.env.PORT || 5000; // Render usa process.env.PORT
+const PORT = process.env.PORT || 5000; 
 app.listen(PORT, () => {
  console.log(`Servidor rodando na porta ${PORT}`);
 });
