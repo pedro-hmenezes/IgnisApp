@@ -14,12 +14,14 @@ export const createOccurrence = async (req: Request, res: Response) => {
     });
   }
 
-  if (!req.user?.id) {
-    return res.status(401).json({ message: 'Usuário não autenticado' });
-  }
+  // Comentar validação de usuário:
+  // if (!req.user?.id) {
+  //   return res.status(401).json({ message: 'Usuário não autenticado' });
+  // }
 
   try {
-    const userId = new mongoose.Types.ObjectId(req.user.id);
+    // Usar ID fake:
+    const userId = new mongoose.Types.ObjectId('000000000000000000000000');
     const saved = await OccurrenceService.criar(parsed.data, userId);
     return res.status(201).json(saved);
   } catch (error) {

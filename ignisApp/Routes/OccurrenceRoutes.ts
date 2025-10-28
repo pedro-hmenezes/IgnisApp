@@ -6,12 +6,12 @@ import {
   updateOccurrence,
   cancelOccurrence,
 } from '../Controllers/OccurrenceControllers.js';
-import { authMiddleware } from '../Middleware/authMiddleware.js';
+// import { authMiddleware } from '../Middleware/authMiddleware.js';
 
 const router = Router();
 
 // Todas as rotas protegidas por JWT
-router.use(authMiddleware);
+// router.use(authMiddleware); // <<<< COMENTAR
 
 // Criar ocorrência
 router.post('/', createOccurrence);
