@@ -79,11 +79,8 @@ app.get('/', (_req: Request, res: Response) => {
 if (router) {
    app.use('/api', router); 
  }
-// Monta as rotas de usuário no prefixo /api/users
 app.use('/api/users', UserRoutes); 
-// Monta as rotas de ocorrência no prefixo /api/occurrences
 app.use('/api/occurrences', OccurrenceRoutes); 
-// =============================
 
 // Middleware de erro 
 app.use(errorMiddleware);
