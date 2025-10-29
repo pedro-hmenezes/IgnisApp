@@ -1,5 +1,3 @@
-// services/logService.ts
-
 import { LogModel } from '../Models/Log';
 
 /**
