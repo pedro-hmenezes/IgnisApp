@@ -17,7 +17,7 @@ router.post('/login', login);
 router.post('/register', register);
 // E expõe também POST '/' para clientes que chamam /api/users
 router.post('/', register);
-// router.put('/user/:id', authMiddleware, updateUser); // <<<< COMENTAR
-// router.delete('/user/:id', authMiddleware, deleteUser); // <<<< COMENTAR
+router.put('/user/:id', authMiddleware, updateUser); // <<<< COMENTAR
+router.delete('/user/:id', authMiddleware, deleteUser); // <<<< COMENTAR
 
 export default router;
