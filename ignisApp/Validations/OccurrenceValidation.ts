@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const occurrenceCreateSchema = z.object({
   numAviso: z.string().min(1),
   tipoOcorrencia: z.string().min(1),
-  timestampRecebimento: z.string().datetime(),
+  timestampRecebimento: z.string().datetime().transform((val) => new Date(val)),
   formaAcionamento: z.string().min(1),
   situacaoOcorrencia: z.string().min(1),
   naturezaInicial: z.string().min(1),
