@@ -1,6 +1,6 @@
 # 🔥 IgnisApp - Back-End API
 
-[cite_start]API RESTful para o sistema de Coleta e Gestão de Ocorrências do Corpo de Bombeiros Militar de Pernambuco (CBMPE). [cite: 3] Desenvolvido com Node.js, Express, TypeScript e MongoDB.
+API RESTful para o sistema de Coleta e Gestão de Ocorrências do Corpo de Bombeiros Militar de Pernambuco (CBMPE). Desenvolvido com Node.js, Express, TypeScript e MongoDB.
 
 ## ✨ Funcionalidades Principais
 
