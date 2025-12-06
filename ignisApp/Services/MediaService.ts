@@ -35,10 +35,10 @@ export class MediaService {
         const fileType = mimeType.startsWith('image/')
             ? 'image'
             : mimeType.startsWith('video/')
-              ? 'video'
-              : mimeType.startsWith('application/')
-                ? 'document'
-                : 'unknown';
+                ? 'video'
+                : mimeType.startsWith('application/')
+                    ? 'document'
+                    : 'unknown';
 
         // Criar registro no banco de dados
         const mediaData: Partial<IMedia> = {

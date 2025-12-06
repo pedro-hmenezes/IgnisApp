@@ -17,28 +17,28 @@ export interface ISignature extends Document {
 
 const SignatureSchema: Schema<ISignature & Document> = new Schema(
     {
-        occurrenceId: { 
-            type: Schema.Types.ObjectId, 
+        occurrenceId: {
+            type: Schema.Types.ObjectId,
             ref: 'Occurrence',
             required: true,
             index: true
         },
-        signerName: { 
-            type: String, 
+        signerName: {
+            type: String,
             required: true,
             trim: true
         },
-        signerRole: { 
+        signerRole: {
             type: String,
             trim: true
         },
-        signatureData: { 
-            type: String, 
+        signatureData: {
+            type: String,
             required: true,
             // Pode ser Base64 ou URL do arquivo no GCS
         },
-        signedAt: { 
-            type: Date, 
+        signedAt: {
+            type: Date,
             default: Date.now,
             required: true
         },

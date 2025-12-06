@@ -1,12 +1,12 @@
 import express, { Request, Response } from 'express';
 import cors, { CorsOptions } from 'cors';
-import { connectDB } from './Config/db.js'; 
-import { errorMiddleware } from './Middleware/errorMiddleware.js'; 
-import UserRoutes from './Routes/UserRoutes.js'; 
-import OccurrenceRoutes from './Routes/OccurrenceRoutes.js'; 
+import { connectDB } from './Config/db.js';
+import { errorMiddleware } from './Middleware/errorMiddleware.js';
+import UserRoutes from './Routes/UserRoutes.js';
+import OccurrenceRoutes from './Routes/OccurrenceRoutes.js';
 import MediaRoutes from './Routes/MediaRoutes.js';
 import SignatureRoutes from './Routes/SignatureRoutes.js';
-import {router} from './Routes/routes.js'; 
+import { router } from './Routes/routes.js';
 
 // Chame a conexão com o banco
 connectDB();
@@ -16,7 +16,7 @@ const app = express();
 
 // --- Configuração CORS ---
 const explicitOrigins = [
-  process.env.FRONTEND_URL, 
+  process.env.FRONTEND_URL,
   ...(process.env.FRONTEND_URLS?.split(',').map((s: string) => s.trim()).filter(Boolean) ?? []),
   'https://ignis-app-front-lv8y.vercel.app',
   'https://iqnisapp.com',
@@ -26,7 +26,7 @@ const explicitOrigins = [
 ].filter(Boolean) as string[];
 
 function isAllowedOrigin(origin?: string | null): boolean {
-  if (!origin) return true; 
+  if (!origin) return true;
   try {
     const url = new URL(origin);
     const host = url.host; // ex: my-app.vercel.app
@@ -51,7 +51,7 @@ const corsOptions: CorsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, 
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
@@ -74,23 +74,23 @@ app.use(express.json()); // Para parsear body JSON
 
 // Rota raiz (opcional)
 app.get('/', (_req: Request, res: Response) => {
- res.send('API do IgnisApp está rodando!');
+  res.send('API do IgnisApp está rodando!');
 });
 
 // === MONTANDO AS ROTAS DA API ===
 if (router) {
-   app.use('/api', router); 
- }
-app.use('/api/users', UserRoutes); 
+  app.use('/api', router);
+}
+app.use('/api/users', UserRoutes);
 app.use('/api/occurrences', OccurrenceRoutes);
 app.use('/api/media', MediaRoutes);
-app.use('/api/signatures', SignatureRoutes); 
+app.use('/api/signatures', SignatureRoutes);
 
 // Middleware de erro 
 app.use(errorMiddleware);
 
 // Inicie o servidor
-const PORT = process.env.PORT || 5000; 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
- console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

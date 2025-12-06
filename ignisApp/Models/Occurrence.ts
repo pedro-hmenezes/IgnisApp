@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { IOccurrence } from '../Interfaces/OccurrenceInterfaces';
- 
+
 const EnderecoSchema = new Schema(
   {
     rua: { type: String, required: true },
@@ -11,7 +11,7 @@ const EnderecoSchema = new Schema(
   },
   { _id: false }
 );
- 
+
 const SolicitanteSchema = new Schema(
   {
     nome: { type: String, required: true },
@@ -20,7 +20,7 @@ const SolicitanteSchema = new Schema(
   },
   { _id: false }
 );
- 
+
 const OccurrenceSchema = new Schema<IOccurrence & Document>(
   {
     numAviso: { type: String, required: true },
@@ -51,5 +51,5 @@ const OccurrenceSchema = new Schema<IOccurrence & Document>(
   },
   { timestamps: true }
 );
- 
+
 export default mongoose.model<IOccurrence & Document>('Occurrence', OccurrenceSchema);

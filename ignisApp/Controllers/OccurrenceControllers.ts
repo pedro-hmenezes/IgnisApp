@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { occurrenceCreateSchema } from '../Validations/OccurrenceValidation.js';
 import { OccurrenceService } from '../Services/OccurrenceService.js';
 import { OccurrenceCreatePayload } from '../Interfaces/OccurrenceInterfaces';
- 
+
 export const createOccurrence = async (req: Request, res: Response) => {
   const parsed = occurrenceCreateSchema.safeParse(req.body);
 
@@ -21,9 +21,9 @@ export const createOccurrence = async (req: Request, res: Response) => {
   }
 
   if (!req.user?.id) {
-    return res.status(401).json({ 
+    return res.status(401).json({
       sucesso: false,
-      mensagem: 'Usuário não autenticado' 
+      mensagem: 'Usuário não autenticado'
     });
   }
 
@@ -42,13 +42,13 @@ export const createOccurrence = async (req: Request, res: Response) => {
       dados: saved,
     });
   } catch (error) {
-    return res.status(500).json({ 
+    return res.status(500).json({
       sucesso: false,
-      mensagem: 'Erro ao criar ocorrência', 
-      error 
+      mensagem: 'Erro ao criar ocorrência',
+      error
     });
   }
-};export const getOccurrences = async (req: Request, res: Response) => {
+}; export const getOccurrences = async (req: Request, res: Response) => {
   try {
     const occurrences = await OccurrenceService.listar();
     return res.status(200).json(occurrences);
@@ -56,7 +56,7 @@ export const createOccurrence = async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Erro ao buscar ocorrências', error });
   }
 };
- 
+
 export const getOccurrenceById = async (req: Request, res: Response) => {
   try {
     const occurrence = await OccurrenceService.buscarPorId(req.params.id);
@@ -68,7 +68,7 @@ export const getOccurrenceById = async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Erro ao buscar ocorrência', error });
   }
 };
- 
+
 export const updateOccurrence = async (req: Request, res: Response) => {
   try {
     const updated = await OccurrenceService.atualizar(req.params.id, req.body);
@@ -80,7 +80,7 @@ export const updateOccurrence = async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Erro ao atualizar ocorrência', error });
   }
 };
- 
+
 export const cancelOccurrence = async (req: Request, res: Response) => {
   try {
     const canceled = await OccurrenceService.cancelar(req.params.id);
@@ -92,7 +92,7 @@ export const cancelOccurrence = async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Erro ao cancelar ocorrência', error });
   }
 };
- 
+
 export const finalizeOccurrence = async (req: Request, res: Response) => {
   try {
     const finalized = await OccurrenceService.finalizar(req.params.id);

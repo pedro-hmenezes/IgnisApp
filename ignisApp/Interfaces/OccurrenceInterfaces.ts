@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
- 
+
 export interface IEndereco {
   rua: string;
   numero: string;
@@ -7,13 +7,13 @@ export interface IEndereco {
   municipio: string;
   referencia?: string;
 }
- 
+
 export interface ISolicitante {
   nome: string;
   telefone: string;
   relacao: string;
 }
- 
+
 export interface ISignature {
   occurrenceId: Types.ObjectId;
   signerName: string;
@@ -50,7 +50,7 @@ export interface IOccurrence {
   createdAt?: Date;
   updatedAt?: Date;
 }
- 
+
 export interface OccurrenceCreatePayload {
   numAviso: string;
   tipoOcorrencia: string;
