@@ -1,25 +1,55 @@
-import { MediaModel } from '../Models/Media';
-import type { IMedia } from '../Models/Media';
+import { Router } from 'express';
+import { MediaController } from '../Controllers/MediaControllers.js';
+import { uploadMedia } from '../Middleware/uploadMedia.js';
+import { authMiddleware } from '../Middleware/authMiddleware.js';
 
-export class MediaService {
-    public async create(mediaData: Partial<IMedia>): Promise<IMedia> {
-        const media = new MediaModel(mediaData);
-        return await media.save();
-    }
+const router = Router();
+const mediaController = new MediaController();
 
-    public async getAll(): Promise<IMedia[]> {
-        return await MediaModel.find();
-    }
+/**
+ * Rotas de Mídia (Fotos e Vídeos)
+ * Base: /api/media
+ */
 
-    public async getById(id: string): Promise<IMedia | null> {
-        return await MediaModel.findById(id);
-    }
+// Upload de arquivo único
+router.post(
+    '/upload',
+    authMiddleware,
+    uploadMedia.single('media'),
+    (req, res) => mediaController.uploadSingle(req, res)
+);
 
-    public async update(id: string, updateData: Partial<IMedia>): Promise<IMedia | null> {
-        return await MediaModel.findByIdAndUpdate(id, updateData, { new: true });
-    }
+// Upload de múltiplos arquivos
+router.post(
+    '/upload-multiple',
+    authMiddleware,
+    uploadMedia.array('media', 10),
+    (req, res) => mediaController.uploadMultiple(req, res)
+);
 
-    public async delete(id: string): Promise<void> {
-        await MediaModel.findByIdAndDelete(id);
-    }
-}
+// Download de arquivo
+router.get('/download/:id', (req, res) => mediaController.download(req, res));
+
+// Obter URL assinada
+router.get('/signed-url/:id', (req, res) => mediaController.getSignedUrl(req, res));
+
+// Listar todos os arquivos
+router.get('/', (req, res) => mediaController.getAll(req, res));
+
+// Obter arquivo por ID
+router.get('/:id', (req, res) => mediaController.getById(req, res));
+
+// Obter arquivos de uma ocorrência
+router.get('/occurrence/:occurrenceId', (req, res) =>
+    mediaController.getByOccurrenceId(req, res)
+);
+
+// Deletar arquivo
+router.delete('/:id', authMiddleware, (req, res) => mediaController.delete(req, res));
+
+// Deletar múltiplos arquivos
+router.delete('/delete-multiple', authMiddleware, (req, res) =>
+    mediaController.deleteMultiple(req, res)
+);
+
+export default router;

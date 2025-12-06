@@ -1,0 +1,192 @@
+/**
+ * 📸 Exemplo de Cliente HTTP para Testar Endpoints de Mídia
+ * 
+ * Use com: curl, Postman, Insomnia ou similar
+ */
+
+// ============================================
+// 1. UPLOAD DE ARQUIVO ÚNICO
+// ============================================
+
+POST http://localhost:3000/api/media/upload
+Authorization: Bearer seu-token-jwt-aqui
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media"; filename="foto.jpg"
+Content-Type: image/jpeg
+
+< ./path/to/foto.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="occurrenceId"
+
+670f3a8c2b8d4e9f1a2b3c4d
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+// ============================================
+// 2. UPLOAD DE MÚLTIPLOS ARQUIVOS
+// ============================================
+
+POST http://localhost:3000/api/media/upload-multiple
+Authorization: Bearer seu-token-jwt-aqui
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media"; filename="foto1.jpg"
+Content-Type: image/jpeg
+
+< ./path/to/foto1.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media"; filename="video.mp4"
+Content-Type: video/mp4
+
+< ./path/to/video.mp4
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="occurrenceId"
+
+670f3a8c2b8d4e9f1a2b3c4d
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+// ============================================
+// 3. OBTER TODOS OS ARQUIVOS
+// ============================================
+
+GET http://localhost:3000/api/media
+Accept: application/json
+
+
+// ============================================
+// 4. OBTER ARQUIVO POR ID
+// ============================================
+
+GET http://localhost:3000/api/media/670f3a8c2b8d4e9f1a2b3c4d
+Accept: application/json
+
+
+// ============================================
+// 5. OBTER ARQUIVOS DE UMA OCORRÊNCIA
+// ============================================
+
+GET http://localhost:3000/api/media/occurrence/670f3a8c2b8d4e9f1a2b3c4d
+Accept: application/json
+
+
+// ============================================
+// 6. OBTER URL ASSINADA (PARA DOWNLOAD)
+// ============================================
+
+GET http://localhost:3000/api/media/signed-url/670f3a8c2b8d4e9f1a2b3c4d?expiresIn=604800000
+Accept: application/json
+
+
+// ============================================
+// 7. DOWNLOAD DE ARQUIVO
+// ============================================
+
+GET http://localhost:3000/api/media/download/670f3a8c2b8d4e9f1a2b3c4d
+
+
+// ============================================
+// 8. DELETAR ARQUIVO
+// ============================================
+
+DELETE http://localhost:3000/api/media/670f3a8c2b8d4e9f1a2b3c4d
+Authorization: Bearer seu-token-jwt-aqui
+
+
+// ============================================
+// 9. DELETAR MÚLTIPLOS ARQUIVOS
+// ============================================
+
+DELETE http://localhost:3000/api/media/delete-multiple
+Authorization: Bearer seu-token-jwt-aqui
+Content-Type: application/json
+
+{
+  "ids": [
+    "670f3a8c2b8d4e9f1a2b3c4d",
+    "670f3a8c2b8d4e9f1a2b3c4e",
+    "670f3a8c2b8d4e9f1a2b3c4f"
+  ]
+}
+
+
+// ============================================
+// EXEMPLOS COM cURL
+// ============================================
+
+// Upload único
+curl -X POST http://localhost:3000/api/media/upload \
+  -H "Authorization: Bearer seu-token" \
+  -F "media=@foto.jpg" \
+  -F "occurrenceId=670f3a8c2b8d4e9f1a2b3c4d"
+
+// Upload múltiplo
+curl -X POST http://localhost:3000/api/media/upload-multiple \
+  -H "Authorization: Bearer seu-token" \
+  -F "media=@foto1.jpg" \
+  -F "media=@foto2.jpg" \
+  -F "media=@video.mp4" \
+  -F "occurrenceId=670f3a8c2b8d4e9f1a2b3c4d"
+
+// Listar todos
+curl -X GET http://localhost:3000/api/media
+
+// Download
+curl -X GET http://localhost:3000/api/media/download/670f3a8c2b8d4e9f1a2b3c4d \
+  -o downloaded-file.jpg
+
+// Deletar
+curl -X DELETE http://localhost:3000/api/media/670f3a8c2b8d4e9f1a2b3c4d \
+  -H "Authorization: Bearer seu-token"
+
+
+// ============================================
+// RESPOSTA DE SUCESSO (201)
+// ============================================
+
+{
+  "sucesso": true,
+  "mensagem": "✅ Arquivo enviado com sucesso!",
+  "dados": {
+    "_id": "670f3a8c2b8d4e9f1a2b3c4d",
+    "name": "foto.jpg",
+    "fileType": "image",
+    "filePath": "images/1733524200000-abc123-foto.jpg",
+    "fileUrl": "https://storage.googleapis.com/...",
+    "capturedAt": "2024-12-06T10:30:00.000Z",
+    "size": 2048576,
+    "mimeType": "image/jpeg",
+    "uploaded": true,
+    "cloudStorage": true,
+    "uploadedBy": "670f3a8c2b8d4e9f1a2b3c4e",
+    "occurrenceId": "670f3a8c2b8d4e9f1a2b3c4f",
+    "metadata": {},
+    "createdAt": "2024-12-06T10:30:00.000Z",
+    "updatedAt": "2024-12-06T10:30:00.000Z",
+    "__v": 0
+  }
+}
+
+
+// ============================================
+// RESPOSTA DE ERRO (400)
+// ============================================
+
+{
+  "sucesso": false,
+  "mensagem": "❌ Nenhum arquivo enviado."
+}
+
+
+// ============================================
+// RESPOSTA DE ERRO (500)
+// ============================================
+
+{
+  "sucesso": false,
+  "mensagem": "❌ Erro ao fazer upload do arquivo.",
+  "erro": "Falha ao fazer upload do arquivo para a nuvem"
+}

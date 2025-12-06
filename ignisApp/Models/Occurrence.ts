@@ -29,9 +29,13 @@ const OccurrenceSchema = new Schema<IOccurrence & Document>(
     formaAcionamento: { type: String, required: true },
     situacaoOcorrencia: { type: String, required: true },
     naturezaInicial: { type: String, required: true },
+    latitude: { type: Number, required: true },
+    longitude: { type: Number, required: true },
     endereco: { type: EnderecoSchema, required: true },
     solicitante: { type: SolicitanteSchema, required: true },
     criadoPor: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    finalizadoPor: { type: Schema.Types.ObjectId, ref: 'User' },
+    finalizadoEm: { type: Date },
     statusGeral: {
       type: String,
       enum: ['em andamento', 'finalizada', 'cancelada'],
@@ -40,6 +44,10 @@ const OccurrenceSchema = new Schema<IOccurrence & Document>(
     },
     canceladoEm: { type: Date },
     motivoCancelamento: { type: String },
+    signature: {
+      type: Schema.Types.ObjectId,
+      ref: 'Signature',
+    },
   },
   { timestamps: true }
 );

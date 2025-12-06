@@ -41,16 +41,37 @@ export const OccurrenceService = {
     return await ocorrencia.save();
   },
  
-  finalizar: async (id: string) => {
+  finalizar: async (id: string, finalizadoPor?: mongoose.Types.ObjectId) => {
     const ocorrencia = await Occurrence.findById(id);
     if (!ocorrencia) return null;
- 
+
     if (ocorrencia.statusGeral !== 'em andamento') {
       throw new Error('Ocorrência já está finalizada ou cancelada');
     }
- 
+
     ocorrencia.statusGeral = 'finalizada';
+    if (finalizadoPor) {
+      ocorrencia.finalizadoPor = finalizadoPor;
+    }
+    ocorrencia.finalizadoEm = new Date();
     ocorrencia.updatedAt = new Date();
     return await ocorrencia.save();
+  },
+
+  buscarComAssinatura: async (id: string) => {
+    return await Occurrence.findById(id)
+      .populate('criadoPor', 'nome email')
+      .populate('finalizadoPor', 'nome email')
+      .populate('signature');
+  },
+
+  listarFinalizadas: async (skip: number = 0, limit: number = 10) => {
+    return await Occurrence.find({ statusGeral: 'finalizada' })
+      .populate('criadoPor', 'nome email')
+      .populate('finalizadoPor', 'nome email')
+      .populate('signature')
+      .skip(skip)
+      .limit(limit)
+      .sort({ finalizadoEm: -1 });
   }
 };

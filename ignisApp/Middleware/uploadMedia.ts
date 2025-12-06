@@ -1,31 +1,49 @@
 import multer from 'multer';
 import path from 'path';
 
-// Configuração do armazenamento
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Pasta onde os arquivos serão salvos
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname);
-        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-    }
-});
+/**
+ * Configuração do Multer para captura de arquivos em memória
+ * Arquivos são armazenados em buffer antes do upload para GCS
+ */
 
-// Filtro de tipos de arquivos (opcional)
+// Armazenamento em memória
+const storage = multer.memoryStorage();
+
+// Filtro de tipos de arquivos
 const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-    if (file.mimetype.startsWith('image/')) {
+    const allowedMimeTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/webp',
+        'video/mp4',
+        'video/quicktime', // MOV
+        'video/x-msvideo', // AVI
+        'application/pdf',
+    ];
+
+    if (allowedMimeTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
-        cb(new Error('Apenas arquivos de imagem são permitidos.'));
+        cb(new Error(`❌ Tipo de arquivo não permitido: ${file.mimetype}`));
     }
 };
 
-// Limites de tamanho (opcional)
+// Limites de tamanho
 const limits = {
-    fileSize: 5 * 1024 * 1024 // 5MB
+    fileSize: 500 * 1024 * 1024, // 500MB para vídeos
+    files: 10, // Máximo de arquivos por requisição
 };
 
-// Exporta o middleware
-export const upload = multer({ storage, fileFilter, limits });
+// Exportar middleware configurado
+export const uploadMedia = multer({ storage, fileFilter, limits });
+
+/**
+ * Middleware para múltiplos arquivos
+ * Uso: uploadMedia.array('media', 10)
+ */
+
+/**
+ * Middleware para arquivo único
+ * Uso: uploadMedia.single('media')
+ */

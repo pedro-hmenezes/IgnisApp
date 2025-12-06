@@ -6,34 +6,49 @@ import { OccurrenceCreatePayload } from '../Interfaces/OccurrenceInterfaces';
  
 export const createOccurrence = async (req: Request, res: Response) => {
   const parsed = occurrenceCreateSchema.safeParse(req.body);
- 
+
   if (!parsed.success) {
+    const formattedErrors = parsed.error.issues.map((issue) => ({
+      campo: issue.path.join('.'),
+      mensagem: issue.message,
+    }));
+
     return res.status(400).json({
-      message: 'Dados inválidos',
-      issues: parsed.error.issues,
+      sucesso: false,
+      mensagem: '❌ Verifique os campos obrigatórios',
+      detalhes: formattedErrors,
     });
   }
- 
+
   if (!req.user?.id) {
-    return res.status(401).json({ message: 'Usuário não autenticado' });
+    return res.status(401).json({ 
+      sucesso: false,
+      mensagem: 'Usuário não autenticado' 
+    });
   }
- 
+
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
- 
+
     const payload: OccurrenceCreatePayload = {
       ...parsed.data,
       timestampRecebimento: new Date(parsed.data.timestampRecebimento),
     };
- 
+
     const saved = await OccurrenceService.criar(payload, userId);
-    return res.status(201).json(saved);
+    return res.status(201).json({
+      sucesso: true,
+      mensagem: '✅ Ocorrência criada com sucesso!',
+      dados: saved,
+    });
   } catch (error) {
-    return res.status(500).json({ message: 'Erro ao criar ocorrência', error });
+    return res.status(500).json({ 
+      sucesso: false,
+      mensagem: 'Erro ao criar ocorrência', 
+      error 
+    });
   }
-};
- 
-export const getOccurrences = async (req: Request, res: Response) => {
+};export const getOccurrences = async (req: Request, res: Response) => {
   try {
     const occurrences = await OccurrenceService.listar();
     return res.status(200).json(occurrences);

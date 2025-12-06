@@ -11,6 +11,8 @@ export const errorMiddleware = (
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
 
   res.status(statusCode).json({
-    message: err.message || 'Erro interno do servidor',
+    sucesso: false,
+    mensagem: err.message || '⚠️ Erro interno do servidor',
+    detalhes: process.env.NODE_ENV === 'development' ? err : undefined,
   });
 };
