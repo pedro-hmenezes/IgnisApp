@@ -38,3 +38,7 @@ try {
     console.error('❌ Erro ao inicializar Google Cloud Storage:', error);
     throw new Error('Falha na inicialização do Google Cloud Storage');
 }
+
+const bucket = storage.bucket(bucketName!);
+
+export { storage, bucket };
