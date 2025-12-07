@@ -142,7 +142,7 @@ export class CloudStorageService {
                 prefix: folderPath,
             });
 
-            return files.map((file) => file.name);
+            return files.map((file: GCSFile) => file.name);
         } catch (error) {
             console.error('Erro ao listar arquivos:', error);
             throw new Error('Falha ao listar arquivos');
