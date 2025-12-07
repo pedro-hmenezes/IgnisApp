@@ -13,22 +13,24 @@ dotenv.config();
 
 const projectId = process.env.GCS_PROJECT_ID;
 const bucketName = process.env.GCS_BUCKET_NAME;
-const keyFilePath = process.env.GCS_KEY_FILE;
 
 let storage: Storage;
 
 try {
-    if (keyFilePath) {
-        // Se tiver arquivo de credenciais local
+    if (process.env.GCP_SERVICE_ACCOUNT_JSON) {
+        const credentials = JSON.parse(process.env.GCP_SERVICE_ACCOUNT_JSON);
+
         storage = new Storage({
             projectId,
-            keyFilename: keyFilePath,
+            credentials: {
+                client_email: credentials.client_email,
+                private_key: credentials.private_key,
+            },
         });
+
     } else {
-        // Usa credenciais de ambiente (recomendado em produção)
-        storage = new Storage({
-            projectId,
-        });
+        // Usa GOOGLE_APPLICATION_CREDENTIALS (ambiente do Google Cloud)
+        storage = new Storage({ projectId });
     }
 
     console.log('✅ Google Cloud Storage inicializado com sucesso');
@@ -36,10 +38,3 @@ try {
     console.error('❌ Erro ao inicializar Google Cloud Storage:', error);
     throw new Error('Falha na inicialização do Google Cloud Storage');
 }
-
-if (!bucketName) {
-    throw new Error('GCS_BUCKET_NAME não configurado no ambiente');
-}
-
-export const bucket = storage.bucket(bucketName);
-export default storage;
