@@ -33,12 +33,12 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     role?: 'operador' | 'major' | 'administrador';
   };
 
-  // força role default 'operador' caso não venha do front
+  // Define role default como 'operador' caso não venha do front
   const dataForValidation = {
     name,
     email,
-    role: role ?? 'operador',
-    passwordHash: password ?? (req.body as any).passwordHash, // cobre ambos os casos
+    role: role || 'operador',
+    passwordHash: password,
   };
 
   const validation = userSchema.safeParse(dataForValidation);
