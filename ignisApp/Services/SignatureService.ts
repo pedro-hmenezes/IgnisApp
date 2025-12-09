@@ -34,6 +34,15 @@ export class SignatureService {
                 throw new Error('Ocorrência não encontrada');
             }
 
+            // Verificar se já existe uma assinatura para esta ocorrência
+            const existingSignature = await SignatureModel.findOne({
+                occurrenceId: new mongoose.Types.ObjectId(occurrenceId),
+            });
+
+            if (existingSignature) {
+                throw new Error('Esta ocorrência já possui uma assinatura registrada');
+            }
+
             // Validar que a ocorrência ainda está em andamento
             if (occurrence.statusGeral !== 'em andamento') {
                 throw new Error(
