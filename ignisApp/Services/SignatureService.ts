@@ -28,11 +28,22 @@ export class SignatureService {
         userAgent?: string
     ): Promise<SignatureResponse> {
         try {
+            console.log('=== SERVICE: Buscando ocorrência ===');
+            console.log('OccurrenceId:', occurrenceId);
+            
             // Validar que a ocorrência existe
             const occurrence = await Occurrence.findById(occurrenceId);
+            
             if (!occurrence) {
+                console.error('Ocorrência não encontrada com ID:', occurrenceId);
                 throw new Error('Ocorrência não encontrada');
             }
+
+            console.log('Ocorrência encontrada:');
+            console.log('- ID:', occurrence._id);
+            console.log('- NumAviso:', occurrence.numAviso);
+            console.log('- Status:', occurrence.statusGeral);
+            console.log('- Tipo do status:', typeof occurrence.statusGeral);
 
             // Verificar se já existe uma assinatura para esta ocorrência
             const existingSignature = await SignatureModel.findOne({
@@ -43,8 +54,14 @@ export class SignatureService {
                 throw new Error('Esta ocorrência já possui uma assinatura registrada');
             }
 
-            // Validar que a ocorrência ainda está em andamento
-            if (occurrence.statusGeral !== 'em andamento') {
+            // Log para debug
+            console.log('Status da ocorrência:', occurrence.statusGeral);
+            console.log('Tipo do status:', typeof occurrence.statusGeral);
+
+            // Validar que a ocorrência ainda está em andamento (case-insensitive)
+            const statusNormalizado = occurrence.statusGeral?.toString().toLowerCase().trim();
+            
+            if (statusNormalizado !== 'em andamento') {
                 throw new Error(
                     `Não é possível assinar ocorrência com status: ${occurrence.statusGeral}`
                 );

@@ -11,6 +11,11 @@ export class SignatureController {
             const { occurrenceId, signerName, signatureData, signerRole } = req.body;
             const userId = req.user?.id;
 
+            console.log('=== INICIANDO PROCESSO DE ASSINATURA ===');
+            console.log('OccurrenceId recebido:', occurrenceId);
+            console.log('SignerName:', signerName);
+            console.log('UserId:', userId);
+
             // Validações
             if (!occurrenceId || !signerName || !signatureData) {
                 return res.status(400).json({
