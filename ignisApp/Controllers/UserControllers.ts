@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import {
   autenticarUsuario,
   criarUsuario,
+  listarUsuarios,
+  buscarUsuarioPorId,
   atualizarUsuario,
   excluirUsuario
 } from '../Services/UserService.js';
@@ -52,6 +54,26 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     return res.status(201).json(user);
   } catch {
     return res.status(400).json({ message: 'Erro ao registrar usuário' });
+  }
+};
+
+export const listUsers = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const users = await listarUsuarios();
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({ message: 'Erro ao listar usuários' });
+  }
+};
+
+export const getUserById = async (req: Request, res: Response): Promise<Response> => {
+  const id = req.params.id;
+  
+  try {
+    const user = await buscarUsuarioPorId(id);
+    return res.json(user);
+  } catch (error) {
+    return res.status(404).json({ message: 'Usuário não encontrado' });
   }
 };
 

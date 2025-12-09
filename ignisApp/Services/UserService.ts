@@ -14,6 +14,20 @@ export const criarUsuario = async (data: IUser) => {
   return userData;
 };
 
+export const listarUsuarios = async () => {
+  const users = await UserModel.find().select('-passwordHash').sort({ createdAt: -1 });
+  return users;
+};
+
+export const buscarUsuarioPorId = async (id: string) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('ID inválido');
+  
+  const user = await UserModel.findById(id).select('-passwordHash');
+  if (!user) throw new Error('Usuário não encontrado');
+  
+  return user;
+};
+
 export const autenticarUsuario = async (email: string, password: string) => {
   const user = await UserModel.findOne({ email }).select('+passwordHash');
   if (!user) return null;
@@ -46,3 +60,4 @@ export const excluirUsuario = async (id: string) => {
 
   return { message: 'Usuário excluído com sucesso' };
 };
+
