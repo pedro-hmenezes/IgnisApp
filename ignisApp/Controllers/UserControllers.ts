@@ -52,8 +52,10 @@ export const register = async (req: Request, res: Response): Promise<Response> =
   try {
     const user = await criarUsuario(validation.data);
     return res.status(201).json(user);
-  } catch {
-    return res.status(400).json({ message: 'Erro ao registrar usuário' });
+  } catch (error) {
+    console.error('Erro ao registrar usuário:', error);
+    const message = error instanceof Error ? error.message : 'Erro ao registrar usuário';
+    return res.status(400).json({ message });
   }
 };
 

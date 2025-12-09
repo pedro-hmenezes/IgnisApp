@@ -3,7 +3,7 @@ import { IUser } from '../Interfaces/UserInterface.js';
 
 const UserSchema: Schema = new Schema(
   {
-    nome: {
+    name: {
       type: String,
       required: true,
       trim: true,
