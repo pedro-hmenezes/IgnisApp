@@ -1,0 +1,119 @@
+### ===================================================
+### 🚀 ENDPOINT DE FINALIZAÇÃO COMPLETA
+### ===================================================
+
+### 1. Finalizar Ocorrência Completamente (TUDO DE UMA VEZ!)
+PATCH https://ignisapp.onrender.com/api/occurrences/674321.../finalize
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_AQUI
+
+{
+  "viaturaEmpenhada": "ABT-45",
+  "equipe": "Sgt Peixoto, Cabo Silva, Soldado Santos",
+  "descricaoAcoes": "Equipe chegou ao local às 14:30. Incêndio em residência de dois pavimentos. Realizado combate direto com linha de ataque de 2 polegadas. Três vítimas resgatadas e encaminhadas para atendimento médico. Situação controlada às 15:45. Área resfriada e vistoriada.",
+  "latitudeFinal": -8.05428,
+  "longitudeFinal": -34.8813,
+  "signerName": "Sgt Peixoto",
+  "signerRole": "Comandante - Viatura ABT-45",
+  "signatureData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  "photosIds": []
+}
+
+### ===================================================
+
+### 2. Finalizar COM Fotos Já Enviadas
+PATCH https://ignisapp.onrender.com/api/occurrences/674321.../finalize
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_AQUI
+
+{
+  "viaturaEmpenhada": "ABT-45",
+  "equipe": "Sgt Peixoto e equipe",
+  "descricaoAcoes": "Combate realizado com sucesso.",
+  "latitudeFinal": -8.05428,
+  "longitudeFinal": -34.8813,
+  "signerName": "Sgt Peixoto",
+  "signerRole": "Comandante",
+  "signatureData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  "photosIds": ["674abc123...", "674def456..."]
+}
+
+### ===================================================
+
+### 3. Buscar Detalhes da Finalização
+GET https://ignisapp.onrender.com/api/occurrences/674321.../finalization-details
+Authorization: Bearer SEU_TOKEN_AQUI
+
+### ===================================================
+### ❌ TESTES DE ERRO
+### ===================================================
+
+### 4. Erro: Campos obrigatórios faltando
+PATCH https://ignisapp.onrender.com/api/occurrences/674321.../finalize
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_AQUI
+
+{
+  "viaturaEmpenhada": "ABT-45",
+  "signerName": "Sgt Peixoto",
+  "signatureData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+}
+
+### ===================================================
+
+### 5. Erro: GPS faltando
+PATCH https://ignisapp.onrender.com/api/occurrences/674321.../finalize
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_AQUI
+
+{
+  "viaturaEmpenhada": "ABT-45",
+  "equipe": "Sgt Peixoto",
+  "descricaoAcoes": "Teste",
+  "signerName": "Sgt Peixoto",
+  "signatureData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+}
+
+### ===================================================
+
+### 6. Erro: Assinatura inválida (não é base64)
+PATCH https://ignisapp.onrender.com/api/occurrences/674321.../finalize
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_AQUI
+
+{
+  "viaturaEmpenhada": "ABT-45",
+  "equipe": "Sgt Peixoto",
+  "descricaoAcoes": "Teste",
+  "latitudeFinal": -8.05428,
+  "longitudeFinal": -34.8813,
+  "signerName": "Sgt Peixoto",
+  "signatureData": "assinatura-invalida"
+}
+
+### ===================================================
+### 📝 NOTAS
+### ===================================================
+
+# ✅ O que este endpoint faz:
+# 1. Salva relatório operacional (viatura, equipe, descrição)
+# 2. Registra localização GPS final
+# 3. Cria assinatura digital
+# 4. Vincula fotos (se enviadas)
+# 5. Marca ocorrência como finalizada
+# 6. Tudo em uma única transação atômica!
+
+# 🎯 Campos obrigatórios:
+# - viaturaEmpenhada
+# - equipe
+# - descricaoAcoes
+# - latitudeFinal
+# - longitudeFinal
+# - signerName
+# - signatureData (base64 de imagem)
+
+# 🔧 Campos opcionais:
+# - signerRole (padrão: "Responsável")
+# - photosIds (array de IDs de fotos já enviadas)
+
+### ===================================================

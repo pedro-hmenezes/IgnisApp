@@ -48,6 +48,13 @@ const OccurrenceSchema = new Schema<IOccurrence & Document>(
       type: Schema.Types.ObjectId,
       ref: 'Signature',
     },
+    // Campos do Relatório Operacional (preenchidos no mobile)
+    viaturaEmpenhada: { type: String },
+    equipe: { type: String },
+    descricaoAcoes: { type: String },
+    // Localização GPS final (capturada no mobile)
+    latitudeFinal: { type: Number },
+    longitudeFinal: { type: Number },
   },
   { timestamps: true }
 );

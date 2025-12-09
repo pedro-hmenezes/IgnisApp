@@ -47,6 +47,12 @@ export interface IOccurrence {
   finalizadoPor?: Types.ObjectId;
   finalizadoEm?: Date;
   signature?: Types.ObjectId | ISignature;
+  // Campos do Relatório Operacional
+  viaturaEmpenhada?: string;
+  equipe?: string;
+  descricaoAcoes?: string;
+  latitudeFinal?: number;
+  longitudeFinal?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

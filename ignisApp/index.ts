@@ -6,6 +6,7 @@ import UserRoutes from './Routes/UserRoutes.js';
 import OccurrenceRoutes from './Routes/OccurrenceRoutes.js';
 import MediaRoutes from './Routes/MediaRoutes.js';
 import SignatureRoutes from './Routes/SignatureRoutes.js';
+import OccurrenceFinalizationRoutes from './Routes/OccurrenceFinalizationRoutes.js';
 import { router } from './Routes/routes.js';
 
 // Chame a conexão com o banco
@@ -83,6 +84,7 @@ if (router) {
 }
 app.use('/api/users', UserRoutes);
 app.use('/api/occurrences', OccurrenceRoutes);
+app.use('/api/occurrences', OccurrenceFinalizationRoutes); // Rotas de finalização
 app.use('/api/media', MediaRoutes);
 app.use('/api/signatures', SignatureRoutes);
 
