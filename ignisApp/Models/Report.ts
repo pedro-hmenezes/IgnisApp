@@ -1,5 +1,5 @@
 import type { IOccurrence } from '../Interfaces/OccurrenceInterfaces.js';
-import type { IUser } from './User';
+import type { IUser } from '../Interfaces/UserInterface.js';
 import type { Document } from 'mongoose';
  
 type OccurrenceDoc = IOccurrence & Document;
