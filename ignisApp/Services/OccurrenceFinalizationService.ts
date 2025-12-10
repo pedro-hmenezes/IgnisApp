@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import Occurrence from '../Models/Occurrence.js';
 import SignatureModel from '../Models/Signature.js';
 import { MediaModel } from '../Models/Media.js';
-import { CloudStorageService } from './CloudStorageService.js';
 
 export interface FinalizeOccurrencePayload {
     // Dados do Relatório Operacional
@@ -70,7 +69,7 @@ export class OccurrenceFinalizationService {
             }
 
             // 2. Criar assinatura
-            console.log('📝 Criando assinatura...');
+            console.log('Criando assinatura...');
             const signature = new SignatureModel({
                 occurrenceId: new mongoose.Types.ObjectId(occurrenceId),
                 signerName: data.signerName.trim(),
@@ -87,10 +86,10 @@ export class OccurrenceFinalizationService {
             });
 
             await signature.save({ session });
-            console.log('✅ Assinatura criada:', signature._id);
+            console.log('Assinatura criada:', signature._id);
 
             // 3. Atualizar ocorrência com TODOS os dados
-            console.log('📋 Atualizando ocorrência...');
+            console.log('Atualizando ocorrência...');
             occurrence.viaturaEmpenhada = data.viaturaEmpenhada.trim();
             occurrence.equipe = data.equipe.trim();
             occurrence.descricaoAcoes = data.descricaoAcoes.trim();
@@ -102,22 +101,22 @@ export class OccurrenceFinalizationService {
             occurrence.finalizadoEm = new Date();
 
             await occurrence.save({ session });
-            console.log('✅ Ocorrência atualizada');
+            console.log('Ocorrência atualizada');
 
             // 4. Vincular fotos (se foram enviadas)
             if (data.photosIds && data.photosIds.length > 0) {
-                console.log(`📸 Vinculando ${data.photosIds.length} fotos...`);
+                console.log(`Vinculando ${data.photosIds.length} fotos...`);
                 await MediaModel.updateMany(
                     { _id: { $in: data.photosIds.map(id => new mongoose.Types.ObjectId(id)) } },
                     { $set: { occurrenceId: new mongoose.Types.ObjectId(occurrenceId) } },
                     { session }
                 );
-                console.log('✅ Fotos vinculadas');
+                console.log('Fotos vinculadas');
             }
 
             // 5. Commit da transação
             await session.commitTransaction();
-            console.log('✅ FINALIZAÇÃO COMPLETA COM SUCESSO!');
+            console.log('FINALIZAÇÃO COMPLETA COM SUCESSO!');
 
             return {
                 occurrence: {
@@ -133,7 +132,7 @@ export class OccurrenceFinalizationService {
                     signerName: signature.signerName,
                     signerRole: signature.signerRole,
                     signedAt: signature.signedAt,
-                    // ✅ Priorizar URL do Cloudinary
+                    // Priorizar URL do Cloudinary
                     signatureUrl: signature.signatureUrl || null,
                     // Só retornar base64 se não tiver URL (compatibilidade)
                     signatureData: signature.signatureUrl ? null : signature.signatureData,
@@ -143,7 +142,7 @@ export class OccurrenceFinalizationService {
 
         } catch (error) {
             await session.abortTransaction();
-            console.error('❌ Erro na finalização:', error);
+            console.error('Erro na finalização:', error);
             throw error;
         } finally {
             session.endSession();
@@ -166,7 +165,7 @@ export class OccurrenceFinalizationService {
             // Buscar fotos vinculadas
             const photos = await MediaModel.find({ occurrenceId: new mongoose.Types.ObjectId(occurrenceId) });
 
-            // ✅ Priorizar URL do Cloudinary na assinatura
+            // Priorizar URL do Cloudinary na assinatura
             let signatureToReturn = null;
             if (occurrence.signature) {
                 const sig = occurrence.signature as any;

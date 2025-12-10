@@ -1,5 +1,5 @@
 ### ===================================================
-### 📤 CLOUDINARY - Upload de Mídia
+### CLOUDINARY - Upload de Mídia
 ### ===================================================
 
 @baseUrl = https://ignisapp.onrender.com
@@ -51,24 +51,24 @@ DELETE {{baseUrl}}/api/media/cloudinary/674abc123def456
 Authorization: Bearer {{token}}
 
 ### ===================================================
-### 📝 NOTAS
+### NOTAS
 ### ===================================================
 
-# ✅ Endpoints Disponíveis:
+# Endpoints Disponíveis:
 # POST   /api/media/cloudinary/upload            - Upload único
 # POST   /api/media/cloudinary/upload-multiple   - Upload múltiplo
 # DELETE /api/media/cloudinary/:id               - Deletar arquivo
 
-# 🎯 Formatos Aceitos:
+# Formatos Aceitos:
 # - Imagens: JPG, JPEG, PNG, GIF, WEBP
 # - Vídeos: MP4, MOV, AVI
 
-# 📦 Campo obrigatório:
+# Campo obrigatório:
 # - media: arquivo(s) a ser(em) enviado(s)
 
-# 📦 Campo opcional:
+# Campo opcional:
 # - occurrenceId: ID da ocorrência (pode vincular depois)
 
-# 🔒 Requer autenticação (Bearer token)
+# Requer autenticação (Bearer token)
 
 ### ===================================================

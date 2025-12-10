@@ -24,7 +24,7 @@ export class MediaRegistrationController {
       };
       const userId = req.user?.id;
 
-      console.log('📝 Registrando fotos no banco...');
+      console.log('Registrando fotos no banco...');
       console.log('OccurrenceId:', occurrenceId);
       console.log('Quantidade de fotos:', photos?.length);
 
@@ -32,14 +32,14 @@ export class MediaRegistrationController {
       if (!occurrenceId) {
         return res.status(400).json({
           sucesso: false,
-          mensagem: '❌ occurrenceId é obrigatório',
+          mensagem: 'occurrenceId é obrigatório',
         });
       }
 
       if (!photos || !Array.isArray(photos) || photos.length === 0) {
         return res.status(400).json({
           sucesso: false,
-          mensagem: '❌ photos deve ser um array não vazio',
+          mensagem: 'photos deve ser um array não vazio',
         });
       }
 
@@ -48,7 +48,7 @@ export class MediaRegistrationController {
         if (!photo.fileUrl || !photo.publicId || !photo.bytes) {
           return res.status(400).json({
             sucesso: false,
-            mensagem: '❌ Cada foto deve ter fileUrl, publicId e bytes',
+            mensagem: 'Cada foto deve ter fileUrl, publicId e bytes',
           });
         }
       }
@@ -87,20 +87,20 @@ export class MediaRegistrationController {
           size: media.size,
         });
 
-        console.log('✅ Foto registrada:', media._id);
+        console.log('Foto registrada:', media._id);
       }
 
       return res.status(201).json({
         sucesso: true,
-        mensagem: `✅ ${savedPhotos.length} foto(s) registrada(s) com sucesso!`,
+        mensagem: `${savedPhotos.length} foto(s) registrada(s) com sucesso!`,
         dados: savedPhotos,
       });
     } catch (error) {
-      console.error('❌ Erro ao registrar fotos:', error);
+      console.error('Erro ao registrar fotos:', error);
       const message = error instanceof Error ? error.message : 'Erro desconhecido';
       return res.status(500).json({
         sucesso: false,
-        mensagem: `❌ Erro ao registrar fotos: ${message}`,
+        mensagem: `Erro ao registrar fotos: ${message}`,
       });
     }
   }
@@ -122,11 +122,11 @@ export class MediaRegistrationController {
         res
       );
     } catch (error) {
-      console.error('❌ Erro ao registrar foto única:', error);
+      console.error('Erro ao registrar foto única:', error);
       const message = error instanceof Error ? error.message : 'Erro desconhecido';
       return res.status(500).json({
         sucesso: false,
-        mensagem: `❌ Erro ao registrar foto: ${message}`,
+        mensagem: `Erro ao registrar foto: ${message}`,
       });
     }
   }

@@ -18,11 +18,11 @@ async function fixOccurrenceStatus() {
         }
 
         await mongoose.connect(mongoUri);
-        console.log('✅ Conectado ao MongoDB');
+        console.log('Conectado ao MongoDB');
 
         // Buscar todas as ocorrências
         const occurrences = await Occurrence.find({});
-        console.log(`📊 Total de ocorrências encontradas: ${occurrences.length}`);
+        console.log(`Total de ocorrências encontradas: ${occurrences.length}`);
 
         let updated = 0;
         let errors = 0;
@@ -33,12 +33,12 @@ async function fixOccurrenceStatus() {
                 const normalizedStatus = originalStatus.toLowerCase().trim();
 
                 if (originalStatus !== normalizedStatus) {
-                    console.log(`🔄 Corrigindo ocorrência ${occ.numAviso}:`);
+                    console.log(`Corrigindo ocorrência ${occ.numAviso}:`);
                     console.log(`   De: "${originalStatus}" -> Para: "${normalizedStatus}"`);
 
                     // Validar que o status normalizado é válido
                     if (!['em andamento', 'finalizada', 'cancelada'].includes(normalizedStatus)) {
-                        console.error(`   ❌ Status inválido: "${normalizedStatus}"`);
+                        console.error(`Status inválido: "${normalizedStatus}"`);
                         errors++;
                         continue;
                     }
@@ -50,15 +50,15 @@ async function fixOccurrenceStatus() {
                     );
                     
                     updated++;
-                    console.log('   ✅ Atualizado');
+                    console.log('Atualizado');
                 }
             } catch (err) {
-                console.error(`❌ Erro ao processar ocorrência ${occ._id}:`, err);
+                console.error(`Erro ao processar ocorrência ${occ._id}:`, err);
                 errors++;
             }
         }
 
-        console.log('\n📈 Resumo:');
+        console.log('\n Resumo:');
         console.log(`   Total: ${occurrences.length}`);
         console.log(`   Atualizados: ${updated}`);
         console.log(`   Erros: ${errors}`);
@@ -69,15 +69,15 @@ async function fixOccurrenceStatus() {
         const finalizadas = await Occurrence.countDocuments({ statusGeral: 'finalizada' });
         const canceladas = await Occurrence.countDocuments({ statusGeral: 'cancelada' });
 
-        console.log('\n📊 Status após correção:');
+        console.log('\n Status após correção:');
         console.log(`   Em andamento: ${emAndamento}`);
         console.log(`   Finalizadas: ${finalizadas}`);
         console.log(`   Canceladas: ${canceladas}`);
 
         await mongoose.disconnect();
-        console.log('\n✅ Script finalizado com sucesso!');
+        console.log('\nScript finalizado com sucesso!');
     } catch (error) {
-        console.error('❌ Erro ao executar script:', error);
+        console.error('Erro ao executar script:', error);
         process.exit(1);
     }
 }

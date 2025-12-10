@@ -9,7 +9,7 @@ export class CloudinaryMediaController {
    */
   public async uploadSingle(req: Request, res: Response): Promise<Response> {
     try {
-      console.log('🚀 Iniciando upload único...');
+      console.log('Iniciando upload único...');
       console.log('Headers:', req.headers);
       console.log('Body occurrenceId:', req.body.occurrenceId);
       
@@ -17,18 +17,18 @@ export class CloudinaryMediaController {
       const { occurrenceId } = req.body;
 
       if (!file) {
-        console.log('❌ Nenhum arquivo recebido');
+        console.log('Nenhum arquivo recebido');
         return res.status(400).json({
           sucesso: false,
-          mensagem: '❌ Nenhum arquivo foi enviado',
+          mensagem: 'Nenhum arquivo foi enviado',
         });
       }
 
-      console.log('📤 Arquivo recebido:');
+      console.log('Arquivo recebido:');
       console.log('- Nome:', file.originalname);
       console.log('- Tamanho:', file.size);
       console.log('- Tipo:', file.mimetype);
-      console.log('📤 Upload para Cloudinary concluído:', file.filename);
+      console.log('Upload para Cloudinary concluído:', file.filename);
 
       // Extrair informações do Cloudinary
       const cloudinaryFile = file as Express.Multer.File & {
@@ -64,7 +64,7 @@ export class CloudinaryMediaController {
 
       return res.status(201).json({
         sucesso: true,
-        mensagem: '✅ Arquivo enviado com sucesso!',
+        mensagem: 'Arquivo enviado com sucesso!',
         dados: {
           _id: media._id,
           name: media.name,
@@ -75,10 +75,10 @@ export class CloudinaryMediaController {
         },
       });
     } catch (error) {
-      console.error('❌ Erro ao fazer upload:', error);
+      console.error('Erro ao fazer upload:', error);
       return res.status(500).json({
         sucesso: false,
-        mensagem: '❌ Erro ao fazer upload do arquivo',
+        mensagem: 'Erro ao fazer upload do arquivo',
         erro: error instanceof Error ? error.message : 'Erro desconhecido',
       });
     }
@@ -96,11 +96,11 @@ export class CloudinaryMediaController {
       if (!files || files.length === 0) {
         return res.status(400).json({
           sucesso: false,
-          mensagem: '❌ Nenhum arquivo foi enviado',
+          mensagem: 'Nenhum arquivo foi enviado',
         });
       }
 
-      console.log(`📤 ${files.length} arquivo(s) enviado(s) para Cloudinary`);
+      console.log(`${files.length} arquivo(s) enviado(s) para Cloudinary`);
 
       const uploadedMedia = [];
 
@@ -144,14 +144,14 @@ export class CloudinaryMediaController {
 
       return res.status(201).json({
         sucesso: true,
-        mensagem: `✅ ${uploadedMedia.length} arquivo(s) enviado(s) com sucesso!`,
+        mensagem: `${uploadedMedia.length} arquivo(s) enviado(s) com sucesso!`,
         dados: uploadedMedia,
       });
     } catch (error) {
-      console.error('❌ Erro ao fazer upload:', error);
+      console.error('Erro ao fazer upload:', error);
       return res.status(500).json({
         sucesso: false,
-        mensagem: '❌ Erro ao fazer upload dos arquivos',
+        mensagem: 'Erro ao fazer upload dos arquivos',
         erro: error instanceof Error ? error.message : 'Erro desconhecido',
       });
     }
@@ -170,7 +170,7 @@ export class CloudinaryMediaController {
       if (!media) {
         return res.status(404).json({
           sucesso: false,
-          mensagem: '❌ Arquivo não encontrado',
+          mensagem: 'Arquivo não encontrado',
         });
       }
 
@@ -178,7 +178,7 @@ export class CloudinaryMediaController {
       if (media.metadata?.cloudinaryPublicId) {
         const cloudinary = (await import('../Config/cloudinary.js')).default;
         await cloudinary.uploader.destroy(media.metadata.cloudinaryPublicId);
-        console.log('🗑️ Arquivo deletado do Cloudinary');
+        console.log('Arquivo deletado do Cloudinary');
       }
 
       // Deletar do banco
@@ -186,13 +186,13 @@ export class CloudinaryMediaController {
 
       return res.json({
         sucesso: true,
-        mensagem: '✅ Arquivo deletado com sucesso',
+        mensagem: 'Arquivo deletado com sucesso',
       });
     } catch (error) {
-      console.error('❌ Erro ao deletar arquivo:', error);
+      console.error('Erro ao deletar arquivo:', error);
       return res.status(500).json({
         sucesso: false,
-        mensagem: '❌ Erro ao deletar arquivo',
+        mensagem: 'Erro ao deletar arquivo',
         erro: error instanceof Error ? error.message : 'Erro desconhecido',
       });
     }

@@ -12,7 +12,7 @@ export const errorMiddleware = (
 
   res.status(statusCode).json({
     sucesso: false,
-    mensagem: err.message || '⚠️ Erro interno do servidor',
+    mensagem: err.message || 'Erro interno do servidor',
     detalhes: process.env.NODE_ENV === 'development' ? err : undefined,
   });
 };

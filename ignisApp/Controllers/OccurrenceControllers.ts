@@ -15,7 +15,7 @@ export const createOccurrence = async (req: Request, res: Response) => {
 
     return res.status(400).json({
       sucesso: false,
-      mensagem: '❌ Verifique os campos obrigatórios',
+      mensagem: 'Verifique os campos obrigatórios',
       detalhes: formattedErrors,
     });
   }
@@ -38,7 +38,7 @@ export const createOccurrence = async (req: Request, res: Response) => {
     const saved = await OccurrenceService.criar(payload, userId);
     return res.status(201).json({
       sucesso: true,
-      mensagem: '✅ Ocorrência criada com sucesso!',
+      mensagem: 'Ocorrência criada com sucesso!',
       dados: saved,
     });
   } catch (error) {

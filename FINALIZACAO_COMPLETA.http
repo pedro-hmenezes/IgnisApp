@@ -1,5 +1,5 @@
 ### ===================================================
-### 🚀 ENDPOINT DE FINALIZAÇÃO COMPLETA
+### ENDPOINT DE FINALIZAÇÃO COMPLETA
 ### ===================================================
 
 ### 1. Finalizar Ocorrência Completamente (TUDO DE UMA VEZ!)
@@ -45,7 +45,7 @@ GET https://ignisapp.onrender.com/api/occurrences/674321.../finalization-details
 Authorization: Bearer SEU_TOKEN_AQUI
 
 ### ===================================================
-### ❌ TESTES DE ERRO
+### TESTES DE ERRO
 ### ===================================================
 
 ### 4. Erro: Campos obrigatórios faltando
@@ -92,10 +92,10 @@ Authorization: Bearer SEU_TOKEN_AQUI
 }
 
 ### ===================================================
-### 📝 NOTAS
+### NOTAS
 ### ===================================================
 
-# ✅ O que este endpoint faz:
+# O que este endpoint faz:
 # 1. Salva relatório operacional (viatura, equipe, descrição)
 # 2. Registra localização GPS final
 # 3. Cria assinatura digital
@@ -103,7 +103,7 @@ Authorization: Bearer SEU_TOKEN_AQUI
 # 5. Marca ocorrência como finalizada
 # 6. Tudo em uma única transação atômica!
 
-# 🎯 Campos obrigatórios:
+# Campos obrigatórios:
 # - viaturaEmpenhada
 # - equipe
 # - descricaoAcoes
@@ -112,7 +112,7 @@ Authorization: Bearer SEU_TOKEN_AQUI
 # - signerName
 # - signatureData (base64 de imagem)
 
-# 🔧 Campos opcionais:
+# Campos opcionais:
 # - signerRole (padrão: "Responsável")
 # - photosIds (array de IDs de fotos já enviadas)
 

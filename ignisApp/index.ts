@@ -4,12 +4,10 @@ import { connectDB } from './Config/db.js';
 import { errorMiddleware } from './Middleware/errorMiddleware.js';
 import UserRoutes from './Routes/UserRoutes.js';
 import OccurrenceRoutes from './Routes/OccurrenceRoutes.js';
-import MediaRoutes from './Routes/MediaRoutes.js';
 import SignatureRoutes from './Routes/SignatureRoutes.js';
 import OccurrenceFinalizationRoutes from './Routes/OccurrenceFinalizationRoutes.js';
 import CloudinaryMediaRoutes from './Routes/CloudinaryMediaRoutes.js';
 import MediaRegistrationRoutes from './Routes/MediaRegistrationRoutes.js';
-import { router } from './Routes/routes.js';
 
 // Chame a conexão com o banco
 connectDB();
@@ -98,15 +96,11 @@ app.get('/health', (_req: Request, res: Response) => {
 });
 
 // === MONTANDO AS ROTAS DA API ===
-if (router) {
-  app.use('/api', router);
-}
 app.use('/api/users', UserRoutes);
 app.use('/api/occurrences', OccurrenceRoutes);
-app.use('/api/occurrences', OccurrenceFinalizationRoutes); // Rotas de finalização
-app.use('/api/media', MediaRoutes);
-app.use('/api/media/cloudinary', CloudinaryMediaRoutes); // Rotas Cloudinary (upload via backend)
-app.use('/api/media', MediaRegistrationRoutes); // Registrar fotos já no Cloudinary
+app.use('/api/occurrences', OccurrenceFinalizationRoutes); // Finalização completa
+app.use('/api/media/cloudinary', CloudinaryMediaRoutes); // Upload via backend (opcional)
+app.use('/api/media', MediaRegistrationRoutes); // Registrar fotos do Cloudinary
 app.use('/api/signatures', SignatureRoutes);
 
 // Middleware de erro 

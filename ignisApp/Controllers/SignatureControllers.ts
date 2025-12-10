@@ -21,7 +21,7 @@ export class SignatureController {
                 return res.status(400).json({
                     sucesso: false,
                     mensagem:
-                        '❌ Campos obrigatórios: occurrenceId, signerName, signatureData',
+                        'Campos obrigatórios: occurrenceId, signerName, signatureData',
                     campos: ['occurrenceId', 'signerName', 'signatureData'],
                 });
             }
@@ -29,7 +29,7 @@ export class SignatureController {
             if (!userId) {
                 return res.status(401).json({
                     sucesso: false,
-                    mensagem: '❌ Usuário não autenticado',
+                    mensagem: 'Usuário não autenticado',
                 });
             }
 
@@ -38,7 +38,7 @@ export class SignatureController {
                 return res.status(400).json({
                     sucesso: false,
                     mensagem:
-                        '❌ Dados de assinatura inválidos (deve ser base64 ou URL válida)',
+                        'Dados de assinatura inválidos (deve ser base64 ou URL válida)',
                 });
             }
 
@@ -63,7 +63,7 @@ export class SignatureController {
 
             return res.status(201).json({
                 sucesso: true,
-                mensagem: '✅ Assinatura registrada com sucesso!',
+                mensagem: 'Assinatura registrada com sucesso!',
                 dados: {
                     signature: {
                         _id: result.signature._id,
@@ -79,7 +79,7 @@ export class SignatureController {
             const message = error instanceof Error ? error.message : 'Erro desconhecido';
             return res.status(500).json({
                 sucesso: false,
-                mensagem: `❌ Erro ao registrar assinatura: ${message}`,
+                mensagem: `Erro ao registrar assinatura: ${message}`,
             });
         }
     }
@@ -94,7 +94,7 @@ export class SignatureController {
             if (!occurrenceId) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ ID da ocorrência é obrigatório',
+                    mensagem: 'ID da ocorrência é obrigatório',
                 });
             }
 
@@ -103,11 +103,11 @@ export class SignatureController {
             if (!signature) {
                 return res.status(404).json({
                     sucesso: false,
-                    mensagem: '❌ Assinatura não encontrada para esta ocorrência',
+                    mensagem: 'Assinatura não encontrada para esta ocorrência',
                 });
             }
 
-            // ✅ Priorizar URL do Cloudinary
+            // Priorizar URL do Cloudinary
             const signatureToReturn = {
                 _id: signature._id,
                 occurrenceId: signature.occurrenceId,
@@ -127,7 +127,7 @@ export class SignatureController {
             console.error('Erro ao buscar assinatura:', error);
             return res.status(500).json({
                 sucesso: false,
-                mensagem: '❌ Erro ao buscar assinatura',
+                mensagem: 'Erro ao buscar assinatura',
             });
         }
     }
@@ -142,7 +142,7 @@ export class SignatureController {
             if (!signatureId) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ ID da assinatura é obrigatório',
+                    mensagem: 'ID da assinatura é obrigatório',
                 });
             }
 
@@ -151,11 +151,11 @@ export class SignatureController {
             if (!signature) {
                 return res.status(404).json({
                     sucesso: false,
-                    mensagem: '❌ Assinatura não encontrada',
+                    mensagem: 'Assinatura não encontrada',
                 });
             }
 
-            // ✅ Priorizar URL do Cloudinary
+            // Priorizar URL do Cloudinary
             const signatureToReturn = {
                 _id: signature._id,
                 occurrenceId: signature.occurrenceId,
@@ -175,7 +175,7 @@ export class SignatureController {
             console.error('Erro ao buscar assinatura:', error);
             return res.status(500).json({
                 sucesso: false,
-                mensagem: '❌ Erro ao buscar assinatura',
+                mensagem: 'Erro ao buscar assinatura',
             });
         }
     }
@@ -190,7 +190,7 @@ export class SignatureController {
             if (!userId) {
                 return res.status(401).json({
                     sucesso: false,
-                    mensagem: '❌ Usuário não autenticado',
+                    mensagem: 'Usuário não autenticado',
                 });
             }
 
@@ -205,7 +205,7 @@ export class SignatureController {
             console.error('Erro ao listar assinaturas:', error);
             return res.status(500).json({
                 sucesso: false,
-                mensagem: '❌ Erro ao listar assinaturas',
+                mensagem: 'Erro ao listar assinaturas',
             });
         }
     }
@@ -221,7 +221,7 @@ export class SignatureController {
             if (!signatureId) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ ID da assinatura é obrigatório',
+                    mensagem: 'ID da assinatura é obrigatório',
                 });
             }
 
@@ -232,20 +232,20 @@ export class SignatureController {
             if (!signature) {
                 return res.status(404).json({
                     sucesso: false,
-                    mensagem: '❌ Assinatura não encontrada',
+                    mensagem: 'Assinatura não encontrada',
                 });
             }
 
             return res.status(200).json({
                 sucesso: true,
-                mensagem: '✅ Assinatura atualizada com sucesso!',
+                mensagem: 'Assinatura atualizada com sucesso!',
                 dados: signature,
             });
         } catch (error) {
             console.error('Erro ao atualizar assinatura:', error);
             return res.status(500).json({
                 sucesso: false,
-                mensagem: '❌ Erro ao atualizar assinatura',
+                mensagem: 'Erro ao atualizar assinatura',
             });
         }
     }
@@ -260,7 +260,7 @@ export class SignatureController {
             if (!signatureId) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ ID da assinatura é obrigatório',
+                    mensagem: 'ID da assinatura é obrigatório',
                 });
             }
 
@@ -268,14 +268,14 @@ export class SignatureController {
 
             return res.status(200).json({
                 sucesso: true,
-                mensagem: '✅ Assinatura deletada com sucesso!',
+                mensagem: 'Assinatura deletada com sucesso!',
             });
         } catch (error) {
             console.error('Erro ao deletar assinatura:', error);
             const message = error instanceof Error ? error.message : 'Erro desconhecido';
             return res.status(500).json({
                 sucesso: false,
-                mensagem: `❌ Erro ao deletar assinatura: ${message}`,
+                mensagem: `Erro ao deletar assinatura: ${message}`,
             });
         }
     }
@@ -295,7 +295,7 @@ export class SignatureController {
             console.error('Erro ao buscar estatísticas:', error);
             return res.status(500).json({
                 sucesso: false,
-                mensagem: '❌ Erro ao buscar estatísticas',
+                mensagem: 'Erro ao buscar estatísticas',
             });
         }
     }

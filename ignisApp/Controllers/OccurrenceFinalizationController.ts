@@ -22,7 +22,7 @@ export class OccurrenceFinalizationController {
             if (!userId) {
                 return res.status(401).json({
                     sucesso: false,
-                    mensagem: '❌ Usuário não autenticado',
+                    mensagem: 'Usuário não autenticado',
                 });
             }
 
@@ -44,7 +44,7 @@ export class OccurrenceFinalizationController {
             if (!viaturaEmpenhada || !equipe || !descricaoAcoes) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ Campos obrigatórios do relatório: viaturaEmpenhada, equipe, descricaoAcoes',
+                    mensagem: 'Campos obrigatórios do relatório: viaturaEmpenhada, equipe, descricaoAcoes',
                     camposFaltantes: [
                         !viaturaEmpenhada ? 'viaturaEmpenhada' : null,
                         !equipe ? 'equipe' : null,
@@ -56,7 +56,7 @@ export class OccurrenceFinalizationController {
             if (!latitudeFinal || !longitudeFinal) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ Localização GPS final é obrigatória',
+                    mensagem: 'Localização GPS final é obrigatória',
                     camposFaltantes: ['latitudeFinal', 'longitudeFinal'],
                 });
             }
@@ -64,7 +64,7 @@ export class OccurrenceFinalizationController {
             if (!signerName || (!signatureUrl && !signatureData)) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ Assinatura incompleta: signerName e (signatureUrl ou signatureData) são obrigatórios',
+                    mensagem: 'Assinatura incompleta: signerName e (signatureUrl ou signatureData) são obrigatórios',
                     camposFaltantes: [
                         !signerName ? 'signerName' : null,
                         !signatureUrl && !signatureData ? 'signatureUrl/signatureData' : null,
@@ -76,7 +76,7 @@ export class OccurrenceFinalizationController {
             if (signatureData && !this.isValidSignatureData(signatureData)) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ Formato de assinatura inválido (deve ser base64 ou URL do Cloudinary)',
+                    mensagem: 'Formato de assinatura inválido (deve ser base64 ou URL do Cloudinary)',
                 });
             }
 
@@ -84,7 +84,7 @@ export class OccurrenceFinalizationController {
             if (signatureUrl && !this.isValidCloudinaryUrl(signatureUrl)) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ URL da assinatura inválida (deve ser URL do Cloudinary)',
+                    mensagem: 'URL da assinatura inválida (deve ser URL do Cloudinary)',
                 });
             }
 
@@ -110,17 +110,17 @@ export class OccurrenceFinalizationController {
 
             return res.status(200).json({
                 sucesso: true,
-                mensagem: '✅ Ocorrência finalizada com sucesso!',
+                mensagem: 'Ocorrência finalizada com sucesso!',
                 dados: result,
             });
 
         } catch (error) {
-            console.error('❌ Erro ao finalizar ocorrência:', error);
+            console.error('Erro ao finalizar ocorrência:', error);
             const message = error instanceof Error ? error.message : 'Erro desconhecido';
             
             return res.status(500).json({
                 sucesso: false,
-                mensagem: `❌ Erro ao finalizar: ${message}`,
+                mensagem: `Erro ao finalizar: ${message}`,
             });
         }
     }
@@ -146,7 +146,7 @@ export class OccurrenceFinalizationController {
             
             return res.status(500).json({
                 sucesso: false,
-                mensagem: `❌ Erro ao buscar detalhes: ${message}`,
+                mensagem: `Erro ao buscar detalhes: ${message}`,
             });
         }
     }
