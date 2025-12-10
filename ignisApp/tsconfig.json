@@ -25,7 +25,8 @@
     "Models",
     "Routes",
     "Services",
-    "Validations"
+    "Validations",
+    "types"
   ],
   "exclude": [
     "node_modules",

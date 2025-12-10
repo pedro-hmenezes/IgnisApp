@@ -1,0 +1,74 @@
+### ===================================================
+### 📤 CLOUDINARY - Upload de Mídia
+### ===================================================
+
+@baseUrl = https://ignisapp.onrender.com
+@token = SEU_TOKEN_AQUI
+
+### 1. Upload de Arquivo Único
+POST {{baseUrl}}/api/media/cloudinary/upload
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media"; filename="foto.jpg"
+Content-Type: image/jpeg
+
+< ./path/to/foto.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="occurrenceId"
+
+674321abc123def456
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### ===================================================
+
+### 2. Upload de Múltiplos Arquivos
+POST {{baseUrl}}/api/media/cloudinary/upload-multiple
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media"; filename="foto1.jpg"
+Content-Type: image/jpeg
+
+< ./path/to/foto1.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="media"; filename="foto2.jpg"
+Content-Type: image/jpeg
+
+< ./path/to/foto2.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="occurrenceId"
+
+674321abc123def456
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### ===================================================
+
+### 3. Deletar Arquivo
+DELETE {{baseUrl}}/api/media/cloudinary/674abc123def456
+Authorization: Bearer {{token}}
+
+### ===================================================
+### 📝 NOTAS
+### ===================================================
+
+# ✅ Endpoints Disponíveis:
+# POST   /api/media/cloudinary/upload            - Upload único
+# POST   /api/media/cloudinary/upload-multiple   - Upload múltiplo
+# DELETE /api/media/cloudinary/:id               - Deletar arquivo
+
+# 🎯 Formatos Aceitos:
+# - Imagens: JPG, JPEG, PNG, GIF, WEBP
+# - Vídeos: MP4, MOV, AVI
+
+# 📦 Campo obrigatório:
+# - media: arquivo(s) a ser(em) enviado(s)
+
+# 📦 Campo opcional:
+# - occurrenceId: ID da ocorrência (pode vincular depois)
+
+# 🔒 Requer autenticação (Bearer token)
+
+### ===================================================

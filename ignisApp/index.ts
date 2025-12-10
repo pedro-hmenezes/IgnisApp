@@ -7,6 +7,7 @@ import OccurrenceRoutes from './Routes/OccurrenceRoutes.js';
 import MediaRoutes from './Routes/MediaRoutes.js';
 import SignatureRoutes from './Routes/SignatureRoutes.js';
 import OccurrenceFinalizationRoutes from './Routes/OccurrenceFinalizationRoutes.js';
+import CloudinaryMediaRoutes from './Routes/CloudinaryMediaRoutes.js';
 import { router } from './Routes/routes.js';
 
 // Chame a conexão com o banco
@@ -86,6 +87,7 @@ app.use('/api/users', UserRoutes);
 app.use('/api/occurrences', OccurrenceRoutes);
 app.use('/api/occurrences', OccurrenceFinalizationRoutes); // Rotas de finalização
 app.use('/api/media', MediaRoutes);
+app.use('/api/media/cloudinary', CloudinaryMediaRoutes); // Rotas Cloudinary
 app.use('/api/signatures', SignatureRoutes);
 
 // Middleware de erro 
