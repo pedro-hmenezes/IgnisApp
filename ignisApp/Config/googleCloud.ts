@@ -14,8 +14,12 @@ dotenv.config();
 const projectId = process.env.GCS_PROJECT_ID;
 const bucketName = process.env.GCS_BUCKET_NAME;
 
-let storage: Storage;
+let storage: Storage | null = null;
+let bucket: any = null;
 
+// ⚠️ GOOGLE CLOUD STORAGE DESABILITADO - USANDO CLOUDINARY
+// Descomente abaixo se precisar voltar a usar GCS
+/*
 try {
     if (process.env.GCP_SERVICE_ACCOUNT_JSON) {
         const credentials = JSON.parse(process.env.GCP_SERVICE_ACCOUNT_JSON);
@@ -33,12 +37,14 @@ try {
         storage = new Storage({ projectId });
     }
 
+    bucket = storage.bucket(bucketName!);
     console.log('✅ Google Cloud Storage inicializado com sucesso');
 } catch (error) {
     console.error('❌ Erro ao inicializar Google Cloud Storage:', error);
     throw new Error('Falha na inicialização do Google Cloud Storage');
 }
+*/
 
-const bucket = storage.bucket(bucketName!);
+console.log('ℹ️ Google Cloud Storage desabilitado - Usando Cloudinary');
 
 export { storage, bucket };
