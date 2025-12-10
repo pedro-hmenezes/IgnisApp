@@ -72,11 +72,28 @@ app.use((req, res, next) => {
 // --- Fim da Configuração CORS ---
 
 // Outros Middlewares Essenciais
-app.use(express.json()); // Para parsear body JSON
+app.use(express.json({ limit: '50mb' })); // Para parsear body JSON
+app.use(express.urlencoded({ extended: true, limit: '50mb' })); // Para form data
+
+// Aumentar timeout para uploads (5 minutos)
+app.use((req, res, next) => {
+  req.setTimeout(300000); // 5 minutos
+  res.setTimeout(300000); // 5 minutos
+  next();
+});
 
 // Rota raiz (opcional)
 app.get('/', (_req: Request, res: Response) => {
   res.send('API do IgnisApp está rodando!');
+});
+
+// Health check para wake-up do Render
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    cloudinary: !!process.env.CLOUDINARY_CLOUD_NAME
+  });
 });
 
 // === MONTANDO AS ROTAS DA API ===

@@ -9,17 +9,26 @@ export class CloudinaryMediaController {
    */
   public async uploadSingle(req: Request, res: Response): Promise<Response> {
     try {
+      console.log('🚀 Iniciando upload único...');
+      console.log('Headers:', req.headers);
+      console.log('Body occurrenceId:', req.body.occurrenceId);
+      
       const file = req.file;
       const { occurrenceId } = req.body;
 
       if (!file) {
+        console.log('❌ Nenhum arquivo recebido');
         return res.status(400).json({
           sucesso: false,
           mensagem: '❌ Nenhum arquivo foi enviado',
         });
       }
 
-      console.log('📤 Arquivo enviado para Cloudinary:', file.filename);
+      console.log('📤 Arquivo recebido:');
+      console.log('- Nome:', file.originalname);
+      console.log('- Tamanho:', file.size);
+      console.log('- Tipo:', file.mimetype);
+      console.log('📤 Upload para Cloudinary concluído:', file.filename);
 
       // Extrair informações do Cloudinary
       const cloudinaryFile = file as Express.Multer.File & {
