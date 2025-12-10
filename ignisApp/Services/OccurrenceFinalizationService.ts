@@ -17,7 +17,8 @@ export interface FinalizeOccurrencePayload {
     // Dados da Assinatura
     signerName: string;
     signerRole: string;
-    signatureData: string; // Base64 da assinatura
+    signatureUrl?: string; // URL do Cloudinary (novo - prioridade)
+    signatureData?: string; // Base64 legado (compatibilidade)
     
     // IDs de fotos já enviadas (opcional - se já foram enviadas antes)
     photosIds?: string[];
@@ -74,7 +75,8 @@ export class OccurrenceFinalizationService {
                 occurrenceId: new mongoose.Types.ObjectId(occurrenceId),
                 signerName: data.signerName.trim(),
                 signerRole: data.signerRole.trim(),
-                signatureData: data.signatureData,
+                signatureUrl: data.signatureUrl, // URL do Cloudinary (prioridade)
+                signatureData: data.signatureData, // Base64 legado (compatibilidade)
                 signedAt: new Date(),
                 ipAddress,
                 userAgent,
@@ -131,6 +133,10 @@ export class OccurrenceFinalizationService {
                     signerName: signature.signerName,
                     signerRole: signature.signerRole,
                     signedAt: signature.signedAt,
+                    // ✅ Priorizar URL do Cloudinary
+                    signatureUrl: signature.signatureUrl || null,
+                    // Só retornar base64 se não tiver URL (compatibilidade)
+                    signatureData: signature.signatureUrl ? null : signature.signatureData,
                 },
                 photosCount: data.photosIds?.length || 0,
             };
@@ -160,8 +166,26 @@ export class OccurrenceFinalizationService {
             // Buscar fotos vinculadas
             const photos = await MediaModel.find({ occurrenceId: new mongoose.Types.ObjectId(occurrenceId) });
 
+            // ✅ Priorizar URL do Cloudinary na assinatura
+            let signatureToReturn = null;
+            if (occurrence.signature) {
+                const sig = occurrence.signature as any;
+                signatureToReturn = {
+                    _id: sig._id,
+                    signerName: sig.signerName,
+                    signerRole: sig.signerRole,
+                    signedAt: sig.signedAt,
+                    // Se tem URL do Cloudinary, usa ela. Senão, usa base64 legado
+                    signatureUrl: sig.signatureUrl || null,
+                    signatureData: sig.signatureUrl ? null : sig.signatureData,
+                };
+            }
+
             return {
-                occurrence,
+                occurrence: {
+                    ...occurrence.toObject(),
+                    signature: signatureToReturn, // Substituir signature com dados processados
+                },
                 photos,
                 hasReport: !!(occurrence.viaturaEmpenhada && occurrence.equipe && occurrence.descricaoAcoes),
                 hasSignature: !!occurrence.signature,

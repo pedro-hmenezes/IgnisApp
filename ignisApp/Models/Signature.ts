@@ -4,7 +4,8 @@ export interface ISignature extends Document {
     occurrenceId: Types.ObjectId;
     signerName: string;
     signerRole?: string; // Ex: "Bombeiro", "Coordenador"
-    signatureData: string; // Base64 ou caminho do arquivo no GCS
+    signatureUrl?: string; // URL do Cloudinary (novo - prioridade)
+    signatureData?: string; // Base64 legado (compatibilidade com dados antigos)
     signedAt: Date;
     ipAddress?: string;
     userAgent?: string;
@@ -32,10 +33,14 @@ const SignatureSchema: Schema<ISignature & Document> = new Schema(
             type: String,
             trim: true
         },
+        signatureUrl: {
+            type: String,
+            trim: true,
+            // URL do Cloudinary (prioridade)
+        },
         signatureData: {
             type: String,
-            required: true,
-            // Pode ser Base64 ou URL do arquivo no GCS
+            // Base64 legado (compatibilidade)
         },
         signedAt: {
             type: Date,

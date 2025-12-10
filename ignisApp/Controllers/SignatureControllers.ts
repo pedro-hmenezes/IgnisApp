@@ -107,9 +107,21 @@ export class SignatureController {
                 });
             }
 
+            // ✅ Priorizar URL do Cloudinary
+            const signatureToReturn = {
+                _id: signature._id,
+                occurrenceId: signature.occurrenceId,
+                signerName: signature.signerName,
+                signerRole: signature.signerRole,
+                signedAt: signature.signedAt,
+                // Se tem URL do Cloudinary, usa ela. Senão, usa base64 legado
+                signatureUrl: signature.signatureUrl || null,
+                signatureData: signature.signatureUrl ? null : signature.signatureData,
+            };
+
             return res.status(200).json({
                 sucesso: true,
-                dados: signature,
+                dados: signatureToReturn,
             });
         } catch (error) {
             console.error('Erro ao buscar assinatura:', error);
@@ -143,9 +155,21 @@ export class SignatureController {
                 });
             }
 
+            // ✅ Priorizar URL do Cloudinary
+            const signatureToReturn = {
+                _id: signature._id,
+                occurrenceId: signature.occurrenceId,
+                signerName: signature.signerName,
+                signerRole: signature.signerRole,
+                signedAt: signature.signedAt,
+                // Se tem URL do Cloudinary, usa ela. Senão, usa base64 legado
+                signatureUrl: signature.signatureUrl || null,
+                signatureData: signature.signatureUrl ? null : signature.signatureData,
+            };
+
             return res.status(200).json({
                 sucesso: true,
-                dados: signature,
+                dados: signatureToReturn,
             });
         } catch (error) {
             console.error('Erro ao buscar assinatura:', error);

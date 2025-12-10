@@ -35,6 +35,7 @@ export class OccurrenceFinalizationController {
                 longitudeFinal,
                 signerName,
                 signerRole,
+                signatureUrl,
                 signatureData,
                 photosIds,
             } = req.body;
@@ -60,22 +61,30 @@ export class OccurrenceFinalizationController {
                 });
             }
 
-            if (!signerName || !signatureData) {
+            if (!signerName || (!signatureUrl && !signatureData)) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ Assinatura incompleta: signerName e signatureData são obrigatórios',
+                    mensagem: '❌ Assinatura incompleta: signerName e (signatureUrl ou signatureData) são obrigatórios',
                     camposFaltantes: [
                         !signerName ? 'signerName' : null,
-                        !signatureData ? 'signatureData' : null,
+                        !signatureUrl && !signatureData ? 'signatureUrl/signatureData' : null,
                     ].filter(Boolean),
                 });
             }
 
-            // Validar formato da assinatura (Base64)
-            if (!this.isValidSignatureData(signatureData)) {
+            // Validar formato da assinatura se for base64 (compatibilidade)
+            if (signatureData && !this.isValidSignatureData(signatureData)) {
                 return res.status(400).json({
                     sucesso: false,
-                    mensagem: '❌ Formato de assinatura inválido (deve ser base64)',
+                    mensagem: '❌ Formato de assinatura inválido (deve ser base64 ou URL do Cloudinary)',
+                });
+            }
+
+            // Validar URL do Cloudinary (se enviada)
+            if (signatureUrl && !this.isValidCloudinaryUrl(signatureUrl)) {
+                return res.status(400).json({
+                    sucesso: false,
+                    mensagem: '❌ URL da assinatura inválida (deve ser URL do Cloudinary)',
                 });
             }
 
@@ -91,6 +100,7 @@ export class OccurrenceFinalizationController {
                     longitudeFinal: parseFloat(longitudeFinal),
                     signerName,
                     signerRole: signerRole || 'Responsável',
+                    signatureUrl,
                     signatureData,
                     photosIds: photosIds || [],
                 },
@@ -150,6 +160,16 @@ export class OccurrenceFinalizationController {
         // Validar se é base64 de imagem
         const base64Regex = /^data:image\/(png|jpg|jpeg|gif|webp);base64,[A-Za-z0-9+/=]+$/;
         return base64Regex.test(signatureData);
+    }
+
+    /**
+     * Valida se a URL é do Cloudinary
+     */
+    private isValidCloudinaryUrl(url: string): boolean {
+        if (!url) return false;
+        
+        // Validar se é URL do Cloudinary
+        return url.startsWith('https://res.cloudinary.com/') || url.startsWith('http://res.cloudinary.com/');
     }
 
     /**
